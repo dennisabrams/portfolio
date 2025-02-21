@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dennis-abrams.com/sitemap.xml
+
+Disallow: /node_modules/
+Disallow: /.astro/
+Disallow: /.vscode/
+
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /tsconfig.json
+Disallow: /postcss.config.js
+Disallow: /tailwind.config.js
+Disallow: /.env
+
+Disallow: /*?sort=
+Disallow: /*&filter=

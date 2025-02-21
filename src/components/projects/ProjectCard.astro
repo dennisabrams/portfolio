@@ -1,0 +1,81 @@
+---
+import { categoryIcons } from '../../data/categoryIcons.js';
+import { categoryStyles } from '../../data/categoryStyles.js';
+import { Image } from 'astro:assets';
+
+export interface ProjectProps {
+  name: string;
+  category: string[];
+  description: string;
+  image: string;
+  link: string;
+  slug: string;
+  color: string;
+}
+
+const { name, category = [], description, image, link, color } = Astro.props;
+---
+<div
+  class="eclipse transition-transform duration-300"
+  style={`background: radial-gradient(ellipse at center, ${color}, transparent 70%);`}
+></div>
+
+<a
+  href={link}
+  class="group block relative w-full max-w-[450px] aspect-[4/3] mx-auto rounded-xl overflow-hidden shadow-lg font-open"
+>
+  <div class="relative w-full h-full">
+    <Image
+      src={image}
+      alt={`${name} Image`}
+      width={800}
+      height={600}
+      class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-110 rounded-xl"
+      formats={['webp', 'avif', 'jpeg']}
+      loading="lazy"
+    />
+
+    <div class="absolute bottom-4 left-4 right-4 bg-black/80 text-white p-4 rounded-md shadow-md">
+      <div class="absolute -top-3 right-3 flex flex-row flex-wrap gap-2">
+        {category.map((cat) => {
+          const iconSrc = categoryIcons[cat];
+          const bgColorClass = categoryStyles[cat];
+
+          return (
+            <span class={`text-white text-xs sm:text-sm px-2 py-1 rounded-full shadow font-bold flex items-center mb-1 ${bgColorClass}`}>
+              {cat}
+              <img
+                src={iconSrc}
+                alt={`${cat} icon`}
+                class="w-4 h-4 ml-1"
+              />
+            </span>
+          );
+        })}
+      </div>
+
+      <h2 class="font-bold text-base sm:text-lg mb-2">
+        {name}
+      </h2>
+
+      <p class="text-xs sm:text-xs text-zinc-300 font-medium">
+        {description}
+      </p>
+    </div>
+  </div>
+</a>
+
+<style>
+  .eclipse {
+    content: "";
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 6%;
+    border-radius: 50%;
+    z-index: -1;
+    transition: transform 0.3s;
+  }
+</style>

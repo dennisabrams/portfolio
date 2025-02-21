@@ -1,0 +1,163 @@
+---
+title: "Challenges"
+icon: "/icons/barrier.svg"
+---
+
+import { Image } from 'astro:assets';
+
+import xenoViewModel from '/src/assets/projects/xeno/viewmodel.webm';
+import xenoSpawn2 from '/src/assets/projects/xeno/spawn2.webm';
+
+import xenoPerformance from '/src/assets/projects/xeno/performance.webm';
+
+import xenoAttachment1 from '/src/assets/projects/xeno/attachment1.webp';
+import xenoAttachment2 from '/src/assets/projects/xeno/attachment2.webp';
+
+import xenoDespawn from '/src/assets/projects/xeno/despawn.webm';
+
+import xenoHealth from '/src/assets/projects/xeno/health.webm';
+
+import FeatureCard from 'src/components/FeatureCard.astro';
+import spawnIcon from 'public/icons/spawn.svg?raw';
+import targetIcon from 'public/icons/target.svg?raw';
+import movementIcon from 'public/icons/movement.svg?raw';
+import fireIcon from 'public/icons/fire.svg?raw';
+import healthIcon from 'public/icons/health.svg?raw';
+
+<div class="mb-20">
+  <FeatureCard
+    title="Summoning System"
+    problemTitle="Problem"
+    problemText="The summoning core was misaligned in third-person views, breaking visual consistency, and the first-person view needed improvement."
+    solutionTitle="Solution"
+    solutionText="Adjusted the attachment points on the player model by fine-tuning position, rotation, and scale. This ensures the core appears naturally in the character’s hand in both first- and third-person views."
+    themeColor="rgba(168,85,247,0.1)"
+  >
+    <div slot="icon" class="w-8 h-8 text-purple-400" set:html={spawnIcon}></div>
+    <div slot="solutionImage" class="flex gap-4">
+      <div class="flex-shrink-0">
+        <video
+          src={xenoViewModel}
+          autoplay
+          loop
+          muted
+          playsinline
+          width="250"
+          class="rounded-lg drop-shadow-[0_20px_8px_rgba(0,0,0,0.5)] transition-transform transform hover:scale-105 ease-in-out duration-300"
+        ></video>
+      </div>
+      <div class="flex-shrink-0">
+        <video
+          src={xenoSpawn2}
+          autoplay
+          loop
+          muted
+          playsinline
+          width="250"
+          class="rounded-lg drop-shadow-[0_20px_8px_rgba(0,0,0,0.5)] transition-transform transform hover:scale-105 ease-in-out duration-300"
+        ></video>
+      </div>
+    </div>
+  </FeatureCard>
+
+  <FeatureCard
+    title="Targeting & Tracking System"
+    problemTitle="Problem"
+    problemText="Using many timers in multiplayer can slow the game down because each timer adds a separate update, which increases the CPU load."
+    solutionTitle="Solution"
+    solutionText="Instead of using many timers, all updates are combined into one continuous loop. This loop handles everything such as smooth movement, collision checks, and updating attachments at the same time. This method reduces extra work and improves performance."
+    themeColor="rgba(249, 115, 22,0.1)"
+  >
+    <div slot="icon" class="w-8 h-8 text-orange-400" set:html={targetIcon}></div>
+    <div slot="solutionImage" class="flex gap-4">
+      <div class="flex-shrink-0">
+        <video
+          src={xenoPerformance}
+          autoplay
+          loop
+          muted
+          playsinline
+          width="250"
+          class="rounded-lg drop-shadow-[0_20px_8px_rgba(0,0,0,0.5)] transition-transform transform hover:scale-105 ease-in-out duration-300"
+        ></video>
+      </div>
+    </div>
+  </FeatureCard>
+
+  <FeatureCard
+    title="Movement System"
+    problemTitle="Problem"
+    problemText="X.E.N.O. had to follow a moving target and turn naturally while avoiding obstacles in real time."
+    solutionTitle="Solution"
+    solutionText="X.E.N.O. smoothly adjusts its position and rotation by gradually blending its current state with the target's state, making its movement fluid and its turns natural."
+    themeColor="rgba(59,130,246,0.1)"
+  >
+    <div slot="icon" class="w-8 h-8 text-blue-400" set:html={movementIcon}></div>
+    <div slot="solutionImage" class="flex gap-4">
+      <div class="flex-shrink-0">
+        <video
+          src={xenoDespawn}
+          autoplay
+          loop
+          muted
+          playsinline
+          width="250"
+          class="rounded-lg drop-shadow-[0_20px_8px_rgba(0,0,0,0.5)] transition-transform transform hover:scale-105 ease-in-out duration-300"
+        ></video>
+      </div>
+    </div>
+  </FeatureCard>
+
+  <FeatureCard
+    title="Grenade Dropping System"
+    problemTitle="Problem"
+    problemText="The grenade drop point needed to remain correctly aligned under X.E.N.O.'s stomach despite movement and rotation."
+    solutionTitle="Solution"
+    solutionText="A dedicated attachment entity is used. Its position offset is recalculated every frame so that grenades consistently appear to drop from the proper spot."
+    themeColor="rgba(239,68,68,0.1)"
+  >
+    <div slot="icon" class="w-8 h-8 text-red-400" set:html={fireIcon}></div>
+    <div slot="solutionImage" class="flex gap-4">
+      <div class="flex-shrink-0">
+        <Image
+          src={xenoAttachment1}
+          alt="Solution Illustration"
+          width={220}
+          class="rounded-lg drop-shadow-[0_20px_8px_rgba(0,0,0,0.5)] transition-transform transform hover:scale-105 ease-in-out duration-300"
+        />
+      </div>
+      <div class="flex-shrink-0">
+        <Image
+          src={xenoAttachment2}
+          alt="Solution Illustration"
+          width={220}
+          class="rounded-lg drop-shadow-[0_20px_8px_rgba(0,0,0,0.5)] transition-transform transform hover:scale-105 ease-in-out duration-300"
+        />
+      </div>
+    </div>
+  </FeatureCard>
+
+  <FeatureCard
+    title="Damage & Health System"
+    problemTitle="Problem"
+    problemText="The health system had to run on the client while continuously syncing live health data from the server, and each user needed the ability to toggle the health bar without impacting performance."
+    solutionTitle="Solution"
+    solutionText="Implement a client-side health bar that syncs health via networked variables, letting each user enable or disable it as needed. Additionally, provide immediate damage feedback by darkening the entity when hit, and trigger a multi-stage explosion on destruction with adjustable intensity."
+    themeColor="rgba(34, 197, 94,0.1)"
+  >
+    <div slot="icon" class="w-8 h-8 text-green-400" set:html={healthIcon}></div>
+    <div slot="solutionImage" class="flex gap-4">
+      <div class="flex-shrink-0">
+        <video
+          src={xenoHealth}
+          autoplay
+          loop
+          muted
+          playsinline
+          width="250"
+          class="rounded-lg drop-shadow-[0_20px_8px_rgba(0,0,0,0.5)] transition-transform transform hover:scale-105 ease-in-out duration-300"
+        ></video>
+      </div>
+    </div>
+  </FeatureCard>
+</div>

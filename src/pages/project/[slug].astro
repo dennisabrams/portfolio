@@ -1,0 +1,393 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProjectDetails from '../../components/projects/ProjectDetails.astro';
+import { projects } from '../../data/projectsData.js';
+import { Image } from 'astro:assets';
+
+export async function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const project = projects.find((p) => p.slug === slug);
+
+const currentIndex = projects.indexOf(project);
+const nextProject = projects[(currentIndex + 1) % projects.length];
+const previousProject = projects[(currentIndex - 1 + projects.length) % projects.length];
+
+function getGitHubTitle(url) {
+  try {
+    const urlObj = new URL(url);
+    const paths = urlObj.pathname.split('/').filter(Boolean);
+    return paths.slice(-2).join('/');
+  } catch (error) {
+    return 'GitHub-Link';
+  }
+}
+
+const gitHubTitle = project.openSource ? getGitHubTitle(project.openSource) : '';
+
+function getClientIconPath(client) {
+  const clientLower = client.toLowerCase();
+  switch (clientLower) {
+    case 'private client':
+      return '/icons/person.svg';
+    case 'personal project':
+      return '/icons/selfproject.svg';
+    default:
+      return '/icons/company.svg';
+  }
+}
+
+function getSourceCodeIconPath(isOpenSource) {
+  return isOpenSource ? '/icons/lock-opened.svg' : '/icons/lock-closed.svg';
+}
+---
+<Layout>
+  <style>
+    .sticky-button {
+      position: sticky;
+      top: 9rem;
+      z-index: 20;
+    }
+
+    #hover-preview {
+      transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+      opacity: 0;
+      visibility: hidden;
+      position: fixed;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    #hover-preview.visible {
+      opacity: 0.9;
+      visibility: visible;
+    }
+
+    #preview-image {
+      width: 45rem;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .hover-preview-button {
+      transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    }
+
+    .hover-preview-button:hover {
+      transform: scale(1.05);
+    }
+
+    .icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      margin-right: 0.5rem;
+    }
+
+    .flex.items-center.text-gray-400 {
+      display: flex;
+      align-items: center;
+      color: #a0aec0;
+    }
+
+    .inline-flex.items-center.gap-2.justify-center {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    #hover-preview::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(0, 0, 0, 0.15) 80%, transparent 10%) 0 0 / 5px 5px,
+                  radial-gradient(circle, rgba(0, 0, 0, 0.15) 10%, transparent 10%) 2.5px 2.5px / 5px 5px;
+      opacity: 1;
+      pointer-events: none;
+      animation: movie-filter 1s infinite linear;
+      border-radius: 8px;
+    }
+
+    @keyframes movie-filter {
+      0% {
+        background-position: 0 0, 2.5px 2.5px;
+      }
+      100% {
+        background-position: 15px 15px, 0px 0px;
+      }
+    }
+
+    .eclipse {
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 10%;
+      border-radius: 50%;
+      transition: all 0.3s ease-in-out;
+      opacity: 0.6;
+    }
+
+    .image-container:hover .eclipse {
+      bottom: -35px;
+      transform: translateX(-50%) scale(1.1);
+      opacity: 0.8;
+    }
+
+    .image-container img {
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .image-container:hover img {
+      transform: scale(1.05);
+    }
+
+    .lamp-light {
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150vw;
+      height: 150vh;
+      pointer-events: none;
+      background: radial-gradient(
+        circle at 50% 0%,
+        rgba(0,0,0, 0.2) 10%,
+        rgba(0,0,0, 0.1) 30%,
+        rgba(0, 0, 0, 0) 80%
+      );
+      opacity: 1;
+      transition: opacity 0.5s ease-in-out, filter 0.5s ease-in-out, background 1s ease-in-out;
+      z-index: -1;
+      filter: blur(80px);
+    }
+
+    .scrolled .lamp-light {
+      opacity: 1;
+    }
+  </style>
+
+  <div class="lamp-light" data-light-r={project.lightColor.r} data-light-g={project.lightColor.g} data-light-b={project.lightColor.b}></div>
+
+  <div class="relative flex items-start justify-center min-h-screen font-open">
+    <a
+      href={`/project/${encodeURIComponent(previousProject.slug)}`}
+      class="sticky-button hover-preview-button font-bold lg:left-[-50px] flex items-center justify-center bg-opacity-75 hover:bg-opacity-100 text-gray-300 px-4 transition duration-300 z-20 h-16 md:static md:mb-4"
+      aria-label="Go Back"
+      data-preview-src={previousProject.preview}
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+      Previous Project
+    </a>
+
+    <div class="max-w-[900px] w-full px-4 mt-12">
+      <div class="flex flex-col lg:flex-row items-center w-full overflow-hidden pb-12">
+        <div class="w-full lg:w-1/2 p-6">
+          <h2 class="text-4xl font-bold text-white mb-4">{project.name}</h2>
+          <p class="text-gray-400">{project.description}</p>
+          <br />
+          <div class="grid grid-cols-[auto_1fr] gap-x-2 gap-y-2 items-center font-semibold">
+            <span class="text-gray-400">Contractor:</span>
+            <div class="flex items-center gap-2">
+              <img src={getClientIconPath(project.client)} alt={`${project.client} Logo`} class="w-5 h-5" />
+              <span class="text-gray-400">{project.client}</span>
+            </div>
+            <span class="text-gray-400">
+              {project.type === 'design' ? 'Project Resources:' : 'Source Code:'}
+            </span>
+            <div class="flex items-center gap-2">
+              <img
+                src={project.type === 'design' ? '/icons/lock-closed.svg' : getSourceCodeIconPath(!!project.openSource)}
+                alt="Projektressourcen Logo"
+                class="w-5 h-5"
+              />
+              <span class="text-gray-400">
+                {project.openSource ? 'Open-Source' : 'Private'}
+              </span>
+            </div>
+          </div>
+          <br />
+          {project.openSource && (
+            <a
+              href={project.openSource}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 justify-center px-6 py-3 bg-white/20 rounded-md hover:bg-white/30 transition-colors whitespace-nowrap shrink-0"
+            >
+              <img
+                src="/icons/github.svg"
+                alt="GitHub Logo"
+                class="w-6 h-6 object-contain"
+              />
+              <span class="font-semibold">{gitHubTitle}</span>
+            </a>
+          )}
+        </div>
+        <div class="w-full lg:w-1/2 p-6 relative image-container">
+          <div
+            class="eclipse"
+            style={`background: radial-gradient(ellipse at center, ${project.color}, transparent 70%);`}
+          ></div>
+          <Image
+            src={project.image}
+            alt={`${project.name} Image`}
+            width={800}
+            height={600}
+            class="w-full h-auto object-cover rounded-lg relative"
+            format="webp"
+            loading="lazy"
+            transition:name="project"
+          />
+        </div>
+      </div>
+      <div class="relative mb-12 mt-6">
+        <div class="h-[2px] bg-gradient-to-r from-transparent via-white/25 to-white/60"></div>
+      </div>
+      <div>
+        <ProjectDetails project={project} />
+      </div>
+    </div>
+
+    <a
+      href={`/project/${encodeURIComponent(nextProject.slug)}`}
+      class="sticky-button hover-preview-button mt-44 font-bold lg:right-[-50px] rounded-tl-3xl rounded-br-3xl rounded-sm bg-blue-500 flex items-center justify-center bg-opacity-75 hover:bg-opacity-100 text-gray-300 px-4 transition duration-300 z-20 h-14 md:static md:mb-4"
+      aria-label="Next Project"
+      data-preview-src={nextProject.preview}
+    >
+      Next Project
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </a>
+  </div>
+
+  <div id="hover-preview">
+    <img id="preview-image" src="" alt="Project Preview" />
+  </div>
+
+  <script>
+    let lampRafId = null;
+    let lampLightActive = true;
+
+    function updateLampLight() {
+      if (!lampLightActive) return;
+      const lampLight = document.querySelector('.lamp-light');
+      if (!lampLight) return;
+      const scrollY = window.scrollY;
+      const baseR = parseInt(lampLight.getAttribute('data-light-r'), 10);
+      const baseG = parseInt(lampLight.getAttribute('data-light-g'), 10);
+      const baseB = parseInt(lampLight.getAttribute('data-light-b'), 10);
+      if (isNaN(baseR) || isNaN(baseG) || isNaN(baseB)) {
+        console.error('Invalid base color values for lamp light.');
+        return;
+      }
+      const maxScroll = 800;
+      const progress = Math.min(scrollY / maxScroll, 1);
+      const r = Math.round(baseR + (255 - baseR) * progress);
+      const g = Math.round(baseG + (255 - baseG) * progress);
+      const b = Math.round(baseB + (255 - baseB) * progress);
+      const alpha = 0.15 + (0.2 - 0.15) * (1 - progress);
+      lampLight.style.background = `radial-gradient(
+        circle at 50% 0%,
+        rgba(${r}, ${g}, ${b}, ${alpha}) 10%,
+        rgba(${r}, ${g}, ${b}, ${alpha - 0.1}) 30%,
+        rgba(0, 0, 0, 0) 80%
+      )`;
+      lampRafId = requestAnimationFrame(updateLampLight);
+    }
+
+    function initLampLight() {
+      if (!document.querySelector('.lamp-light')) return;
+      lampLightActive = true;
+      updateLampLight();
+    }
+
+    function cleanupLampLight() {
+      lampLightActive = false;
+      if (lampRafId) {
+        cancelAnimationFrame(lampRafId);
+        lampRafId = null;
+      }
+    }
+
+    document.addEventListener('astro:page-load', initLampLight);
+    document.addEventListener('astro:page-unload', cleanupLampLight);
+  </script>
+
+  <script>
+    let currentMouseX = null;
+    let currentMouseY = null;
+
+    document.addEventListener('mousemove', (e) => {
+      currentMouseX = e.clientX;
+      currentMouseY = e.clientY;
+    });
+
+    function initializePreview() {
+      const hoverPreview = document.getElementById('hover-preview');
+      const previewImage = document.getElementById('preview-image');
+      const buttons = document.querySelectorAll('.hover-preview-button');
+
+      function updatePosition(clientX, clientY) {
+        const offset = 20;
+        let x = clientX + offset;
+        let y = clientY + offset;
+        const previewWidth = previewImage.offsetWidth;
+        const previewHeight = previewImage.offsetHeight;
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        if (x + previewWidth > windowWidth) {
+          x = clientX - previewWidth - offset;
+        }
+        if (y + previewHeight > windowHeight) {
+          y = clientY - previewHeight - offset;
+        }
+        hoverPreview.style.left = `${x}px`;
+        hoverPreview.style.top = `${y}px`;
+      }
+
+      function showPreview(button, clientX, clientY) {
+        const imgSrc = button.getAttribute('data-preview-src');
+        if (imgSrc) {
+          previewImage.src = imgSrc;
+          hoverPreview.classList.add('visible');
+          updatePosition(clientX, clientY);
+        }
+      }
+
+      buttons.forEach(button => {
+        button.addEventListener('mouseenter', (e) => {
+          showPreview(button, e.clientX, e.clientY);
+        });
+        button.addEventListener('mouseleave', () => {
+          hoverPreview.classList.remove('visible');
+        });
+        button.addEventListener('mousemove', (e) => {
+          updatePosition(e.clientX, e.clientY);
+        });
+      });
+
+      setTimeout(() => {
+        if (currentMouseX !== null && currentMouseY !== null) {
+          const elem = document.elementFromPoint(currentMouseX, currentMouseY);
+          const button = elem && elem.closest('.hover-preview-button');
+          if (button) {
+            showPreview(button, currentMouseX, currentMouseY);
+          }
+        }
+      }, 100);
+    }
+
+    document.addEventListener('astro:page-load', initializePreview);
+  </script>
+</Layout>

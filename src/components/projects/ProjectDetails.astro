@@ -1,0 +1,249 @@
+---
+import ProjectSectionLayout from '../../layouts/ProjectSectionLayout.astro';
+const { project } = Astro.props;
+
+const mdxImports = import.meta.glob('../../content/**/*.mdx');
+
+const sections = await Promise.all(
+  project.sections.map(async (section) => {
+    const key = `../../content/${section.contentPath}`;
+    const importer = mdxImports[key];
+    if (!importer) {
+      throw new Error(`MDX file not found for key: ${key}`);
+    }
+    const module = await importer();
+    return { ...section, Component: module.default };
+  })
+);
+---
+
+<style>
+  .project-details-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .busstop-navigation {
+    position: sticky;
+    top: 16rem;
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.8rem 0 30px;
+  }
+
+  .busstop-line {
+    position: absolute;
+    inset: 0 auto;
+    left: 50%;
+    width: 2px;
+    background-color: #a0aec0;
+    z-index: -1;
+    transform: translateX(-50%);
+  }
+
+  .progress-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    background-color: #3b82f6;
+    height: 0;
+    z-index: -1;
+    transform: translateX(-50%);
+    transition: height 0.2s ease-out;
+  }
+
+  .busstop-marker {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #a0aec0;
+    border: 2px solid transparent;
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .busstop-marker.active {
+    background-color: #2563eb;
+    border-color: #3b82f6;
+  }
+
+  .busstop-label {
+    position: absolute;
+    right: calc(100% + 15px);
+    top: -35%;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #a0aec0;
+    white-space: nowrap;
+    text-align: right;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .busstop-label.active {
+    color: #ffffff;
+    font-size: 0.95rem;
+  }
+
+  .busstop-label.active img {
+    filter: brightness(0) invert(1);
+    transition: filter 0.3s ease-in-out;
+  }
+
+  .details-content {
+    flex: 1;
+    margin-left: 20px;
+  }
+
+  .section {
+    margin-bottom: 32px;
+    padding: 20px 0;
+  }
+
+  .section h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #fff;
+  }
+
+  .section p {
+    color: #a0aec0;
+  }
+</style>
+
+<div class="project-details-container" id="project-box">
+  {project?.sections && (
+    <div class="busstop-navigation relative">
+      <div class="busstop-line"></div>
+      <div id="progress-line" class="progress-line"></div>
+      <div class="flex flex-col justify-start items-center space-y-8">
+        {project.sections.map((section, index) => (
+          <a
+            key={index}
+            href={`#section-${index}`}
+            class="relative flex items-center group"
+            aria-label={`Scroll to ${section.title}`}
+          >
+            <span class="busstop-label group-hover:text-white transition-all flex items-center">
+              {section.title}
+              <img
+                src={section.icon}
+                alt={section.title}
+                class="w-5 h-5 ml-2 mr-4 transition-all duration-300 ease-in-out busstop-icon group-hover:brightness-0 group-hover:invert"
+              />
+            </span>
+            <div class="busstop-marker"></div>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <div class="details-content">
+    {sections.length
+      ? sections.map((section, index) => (
+          <ProjectSectionLayout key={index} frontmatter={section} Content={section.Component} />
+        ))
+      : <p class="text-gray-500">No content available.</p>}
+  </div>
+</div>
+
+<script>
+  function initializeBus() {
+    const markers = document.querySelectorAll('.busstop-marker');
+    const progressLine = document.getElementById('progress-line');
+    const sections = document.querySelectorAll('.section');
+    const projectBox = document.getElementById('project-box');
+
+    if (!markers.length || !progressLine || !sections.length || !projectBox) return;
+
+    const initialOffset = 300;
+    const offsetIncrementRem = 1.25;
+    const progressDelayFactor = 0.95;
+    const linePaddingTop = 10;
+    const linePaddingBottom = 10;
+    let sectionOffsets = [];
+
+    const remToPx = (rem) => rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+    const calculateSectionOffsets = () => {
+      sectionOffsets = [];
+      sections.forEach((section, index) => {
+        if (!section) return;
+        const dynamicOffset = initialOffset + index * remToPx(offsetIncrementRem);
+        const rect = section.getBoundingClientRect();
+        if (!rect) return;
+        const offsetTop = rect.top + window.scrollY - dynamicOffset;
+        sectionOffsets.push(offsetTop);
+      });
+
+      if (projectBox) {
+        const projectBoxRect = projectBox.getBoundingClientRect();
+        const projectBoxBottom = projectBoxRect.bottom + window.scrollY;
+        sectionOffsets.push(projectBoxBottom - linePaddingBottom);
+      }
+    };
+
+    const updateProgress = () => {
+      const scrollTop = window.scrollY + linePaddingTop;
+      let progress = 0;
+
+      document.querySelectorAll('.busstop-label').forEach(label => label.classList.remove('active'));
+
+      for (let i = 0; i < sectionOffsets.length - 1; i++) {
+        if (scrollTop >= sectionOffsets[i]) {
+          markers[i].classList.add('active');
+        } else {
+          markers[i].classList.remove('active');
+        }
+
+        if (scrollTop >= sectionOffsets[i] && scrollTop < sectionOffsets[i + 1]) {
+          markers[i].previousElementSibling?.classList.add('active');
+        }
+      }
+
+      if (sectionOffsets.length > 1 && scrollTop >= sectionOffsets[sectionOffsets.length - 2]) {
+        markers[markers.length - 1].classList.add('active');
+        markers[markers.length - 1].previousElementSibling?.classList.add('active');
+        progress = 1;
+      } else {
+        for (let i = 0; i < sectionOffsets.length - 1; i++) {
+          if (scrollTop >= sectionOffsets[i] && scrollTop < sectionOffsets[i + 1]) {
+            const sectionProgress = (scrollTop - sectionOffsets[i]) / (sectionOffsets[i + 1] - sectionOffsets[i]);
+            progress = (i + sectionProgress) / (sectionOffsets.length - 2);
+          }
+        }
+      }
+
+      progressLine.style.height = `calc(${(progress * 100 * progressDelayFactor).toFixed(4)}%)`;
+    };
+
+    document.querySelectorAll('.busstop-navigation a').forEach((anchor, index) => {
+      anchor.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (sectionOffsets.length > index) {
+          window.scrollTo({
+            top: sectionOffsets[index],
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    calculateSectionOffsets();
+    updateProgress();
+
+    window.addEventListener('scroll', () => requestAnimationFrame(updateProgress));
+    window.addEventListener('resize', () => {
+      calculateSectionOffsets();
+      updateProgress();
+    });
+  }
+
+  document.addEventListener('astro:page-load', initializeBus);
+</script>

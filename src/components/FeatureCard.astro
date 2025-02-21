@@ -1,0 +1,55 @@
+---
+const {
+  title = "Adaptive Movement",
+  problemTitle = "Problem",
+  problemText = "Problem text",
+  solutionTitle = "Solution",
+  solutionText = "Solution text",
+  themeColor = "rgba(255,0,0,0.5)",
+} = Astro.props;
+---
+
+<div class="max-w-3xl mx-auto space-y-4 pt-6" style={`--theme-color: ${themeColor};`}>
+  <div class="flex items-center gap-4">
+    <div class="shrink-0 relative">
+      <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
+      <div class="relative">
+        <slot name="icon"></slot>
+      </div>
+    </div>
+    <h3 class="text-2xl text-gray-300 font-bold">{title}</h3>
+  </div>
+
+  <div class="pl-6">
+    <div class="space-y-4">
+      <div class="mt-6 flex items-center gap-2 text-red-500">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        <span class="pr-3 pt-1 pb-1 rounded-r-2xl font-bold bg-gradient-to-r from-transparent to-red-500/10">
+          {problemTitle}
+        </span>
+      </div>
+      <p class="m-7 pb-7 max-w-prose" set:html={problemText}></p>
+    </div>
+
+    <div class="border-t-2 space-y-4 mb-6" style="border-color: var(--theme-color);">
+      <div class="mt-6 flex items-center gap-2 text-emerald-500">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span class="pr-3 pt-1 pb-1 rounded-r-2xl font-bold bg-gradient-to-r from-transparent to-emerald-500/10">
+          {solutionTitle}
+        </span>
+      </div>
+
+      <div class="m-7">
+        <div class="flex flex-col md:flex-row gap-4">
+          <slot name="solutionImage" />
+        </div>
+      </div>
+
+      <p class="m-7 max-w-prose" set:html={solutionText}></p>
+    </div>
+  </div>
+</div>

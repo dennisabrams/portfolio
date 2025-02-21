@@ -1,0 +1,189 @@
+---
+title: "Outcome"
+icon: "/icons/project-ending.svg"
+---
+
+import { Image } from "astro:assets";
+import ResponsiveModal from "src/components/Modal.astro";
+import steamIcon from "public/icons/steam.svg";
+import convarIcon from "public/icons/convar.svg";
+import xenoCam from "/src/assets/projects/xeno/cam.webm";
+
+<div class="mt-8">
+  <ResponsiveModal btnBg="bg-gray-600/70">
+    <div slot="description">
+      <p>
+        Project X.E.N.O. isn’t about advanced artificial intelligence, it’s all
+        about carefully designed <b>scripted behavior</b> that makes it feel like a
+        real, serious threat. Every movement, attack, and visual effect has been
+        carefully adjusted to create a fun and challenging experience.
+      </p>
+    </div>
+
+    <div slot="trigger" class="flex items-center space-x-2">
+      <span class="text-white font-semibold">Configuration Details</span>
+      <Image src={convarIcon} alt="Custom Icon" width={18} />
+    </div>
+
+    <div slot="modal">
+      <div class="max-w-prose mt-20 mb-10">
+        <h2 class="text-4xl text-gray-300 font-bold">What are these Settings?</h2>
+        <p class="p-4">
+          Project X.E.N.O. includes custom configuration settings, known as <b>ConVars</b> (Console Variables), that enable a server administrator or a client playing in Sandbox mode to adjust X.E.N.O.'s behavior.<br /><br />
+          These settings <b>allow for changes</b> to parameters such as the maximum number of active entities, health values, and event timings.
+          They function like switches or sliders, permitting <b>fine-tuning of the addon's operation</b> without modifying the underlying code.
+        </p>
+      </div>
+      <table class="divide-y divide-gray-600 max-w-2xl">
+        <thead class="bg-black/60 hover:bg-black hover:bg-opacity-80">
+          <tr>
+            <th class="px-4 py-3 text-left text-lg text-white tracking-wider">Server ConVar</th>
+            <th class="px-4 py-3 text-left text-lg text-white tracking-wider">Default Value</th>
+            <th class="px-4 py-3 text-left text-lg text-white tracking-wider">Description</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-600">
+          <tr class="transition-colors bg-black/60 hover:bg-black hover:bg-opacity-80">
+            <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">ttt_xeno_max_active</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">1</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+              Maximum number of active X.E.N.O.'s allowed in the round.
+            </td>
+          </tr>
+          <tr class="transition-colors bg-black/60 hover:bg-black hover:bg-opacity-80">
+            <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">ttt_xeno_announce_target</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">0</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+              Set to 1 to announce the target in chat, 0 to keep silent.
+            </td>
+          </tr>
+          <tr class="transition-colors bg-black/60 hover:bg-black hover:bg-opacity-80">
+            <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">ttt_xeno_health</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">800</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+              The health of X.E.N.O.
+            </td>
+          </tr>
+          <tr class="transition-colors bg-black/60 hover:bg-black hover:bg-opacity-80">
+            <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">ttt_xeno_duration</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">30</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+              How long X.E.N.O. stays active (in seconds).
+            </td>
+          </tr>
+          <tr class="transition-colors bg-black/60 hover:bg-black hover:bg-opacity-80">
+            <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">ttt_xeno_speed</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">100</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+              Adjusts X.E.N.O.'s follow speed: Higher values make it more aggressive, lower values slow it down.
+            </td>
+          </tr>
+          <tr class="transition-colors bg-black/60 hover:bg-black hover:bg-opacity-80">
+            <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">ttt_xeno_spawndamage</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">100</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+              Damage dealt by X.E.N.O. upon spawning.
+            </td>
+          </tr>
+          <tr class="transition-colors bg-black/60 hover:bg-black hover:bg-opacity-80">
+            <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">ttt_xeno_deathdamage</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">50</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+              Damage dealt by X.E.N.O. upon death.
+            </td>
+          </tr>
+          <tr class="transition-colors bg-black/60 hover:bg-black hover:bg-opacity-80">
+            <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">ttt_xeno_grenade_damage</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">70</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+              Explosion damage of grenades dropped by X.E.N.O.
+            </td>
+          </tr>
+          <tr class="transition-colors bg-black/60 hover:bg-black hover:bg-opacity-80">
+            <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">ttt_xeno_grenade_interval_min</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">0.1</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+              Minimum interval for dropping grenades (in seconds).
+            </td>
+          </tr>
+          <tr class="transition-colors bg-black/60 hover:bg-black hover:bg-opacity-80">
+            <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">ttt_xeno_grenade_interval_max</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">0.8</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+              Maximum interval for dropping grenades (in seconds).
+            </td>
+          </tr>
+          <tr class="transition-colors bg-black/60 hover:bg-black hover:bg-opacity-80">
+            <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">ttt_xeno_grenade_drop_radius</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">100</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+              Adjust the drop radius and spread of grenades dropped by X.E.N.O. The larger the ConVar value, the greater the spread. The smaller the value, the tighter the spread.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="divide-y divide-gray-600 mt-8 max-w-2xl mb-20">
+        <thead class="bg-black/60 hover:bg-black hover:bg-opacity-80">
+          <tr>
+            <th class="px-4 py-3 text-left text-lg text-white tracking-wider">Client ConVar</th>
+            <th class="px-4 py-3 text-left text-lg text-white tracking-wider">Default Value</th>
+            <th class="px-4 py-3 text-left text-lg text-white tracking-wider">Description</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-600">
+          <tr class="bg-black/60 transition-colors hover:bg-black hover:bg-opacity-80">
+            <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">ttt_xeno_healthbar</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">1</td>
+            <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+              Set to 0 to disable X.E.N.O.'s health bar, or 1 to display it.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ResponsiveModal>
+
+  <div class="max-w-prose p-4 mt-4">
+    <p>This project challenged my skills in:</p>
+    <br />
+    <ul class="list-disc ml-12">
+      <li>Real-time movement interpolation.</li>
+      <li>Dynamic object attachment.</li>
+      <li>Crafting responsive, AI-like behavior through scripting.</li>
+    </ul>
+  </div>
+
+  <div class="p-4 mt-3">
+    <video
+      src={xenoCam}
+      autoplay
+      loop
+      muted
+      playsinline
+      width="800"
+      class="rounded-lg drop-shadow-[0_20px_8px_rgba(0,0,0,0.5)]"
+    ></video>
+  </div>
+
+  <div class="max-w-prose p-4">
+    <button>
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://steamcommunity.com/sharedfiles/filedetails/?id=3365382068"
+        class="mb-6 px-6 py-3 bg-blue-500/70 rounded-lg shadow-xl hover:shadow-2xl flex items-center space-x-2 transition-transform transform hover:scale-105 ease-in-out duration-300"
+      >
+        <span class="text-white font-semibold">Project X.E.N.O. on Steam</span>
+        <Image src={steamIcon} width="20" alt="Custom Icon" />
+      </a>
+    </button>
+    <p>
+      I'm really proud of what X.E.N.O.<sup class="text-blue-500 font-black">*</sup> has become ❤️, yet its design
+      still holds significant potential for future enhancements and maybe some variations...
+    </p>
+    <h3 class="relative mt-2 text-xs pl-4">
+      <span class="absolute left-0 top-0 text-blue-500 font-black">*</span>
+      X.E.N.O. - Xtreme Explosive Neutralization Organism
+    </h3>
+  </div>
+</div>

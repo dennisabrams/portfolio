@@ -1,0 +1,155 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Delicious+Handrawn");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 130, 246, 0.3) transparent;
+}
+
+body {
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+::selection {
+  background-color: rgb(59 130 246 / 0.8);
+  color: #000000;
+}
+
+.column-with-opacity::before,
+.column-with-opacity::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 800px;
+  pointer-events: none;
+  z-index: 10;
+  transform: translateZ(0);
+  will-change: opacity, transform;
+  contain: layout paint;
+  backface-visibility: hidden;
+}
+
+@media (max-width: 639px) {
+  .column-with-opacity::before,
+  .column-with-opacity::after {
+    height: 600px;
+  }
+}
+
+.column-with-opacity::before {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.5));
+}
+
+.column-with-opacity::after {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.5));
+}
+
+.particle-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #3498db;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: particle-animation 1.5s forwards;
+}
+
+@keyframes particle-animation {
+  0% {
+    transform: scale(1) translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0) translate(var(--x), var(--y));
+    opacity: 0;
+  }
+}
+
+#contact-button {
+  position: relative;
+  z-index: 10;
+  transition: border-bottom-left-radius 1.25s ease, border-bottom-right-radius 1.25s ease;
+}
+
+.button-container {
+  position: relative;
+  display: inline-block;
+}
+
+.button-container:hover #contact-button {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+#email-popup {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 1.25s ease, opacity 1.25s ease, visibility 0s linear 1.25s;
+  background: #ffffff;
+  padding: 8px 12px;
+  margin: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  cursor: pointer;
+  white-space: nowrap;
+  z-index: 2;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  color: #000000;
+}
+
+.button-container:hover #email-popup {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: transform 1.25s ease, opacity 1.25s ease, visibility 0s;
+}
+
+#email-popup:hover {
+  background: #E1D9D1;
+}
+
+.interactive-letter {
+  position: relative;
+  display: inline-block;
+  color: white;
+  text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  white-space: pre;
+}
+
+.interactive-letter.active {
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, var(--intensity)),
+    0 0 6px rgba(255, 255, 255, var(--intensity)),
+    0 0 12px rgba(255, 255, 255, var(--intensity));
+}
+
+html {
+  scroll-behavior: smooth;
+}
