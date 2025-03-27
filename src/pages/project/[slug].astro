@@ -276,8 +276,10 @@ function getSourceCodeIconPath(isOpenSource) {
   </div>
 
   <script>
+    // Store references to event listeners and animation frames
     let lampRafId = null;
     let lampLightActive = true;
+    let hasInitializedLamp = false;
 
     function updateLampLight() {
       if (!lampLightActive) return;
@@ -307,6 +309,13 @@ function getSourceCodeIconPath(isOpenSource) {
     }
 
     function initLampLight() {
+      // Prevent double initialization
+      if (hasInitializedLamp) return;
+      hasInitializedLamp = true;
+      
+      // Clean up any existing animation
+      cleanupLampLight();
+      
       if (!document.querySelector('.lamp-light')) return;
       lampLightActive = true;
       updateLampLight();
@@ -320,6 +329,17 @@ function getSourceCodeIconPath(isOpenSource) {
       }
     }
 
+    // Reset initialization flag before page transitions
+    document.addEventListener('astro:before-swap', () => {
+      hasInitializedLamp = false;
+    });
+
+    // Use both event listeners for maximum compatibility
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initLampLight);
+    } else {
+      initLampLight();
+    }
     document.addEventListener('astro:page-load', initLampLight);
     document.addEventListener('astro:page-unload', cleanupLampLight);
   </script>
@@ -327,6 +347,7 @@ function getSourceCodeIconPath(isOpenSource) {
   <script>
     let currentMouseX = null;
     let currentMouseY = null;
+    let hasInitializedPreview = false;
 
     document.addEventListener('mousemove', (e) => {
       currentMouseX = e.clientX;
@@ -334,9 +355,15 @@ function getSourceCodeIconPath(isOpenSource) {
     });
 
     function initializePreview() {
+      // Prevent double initialization
+      if (hasInitializedPreview) return;
+      hasInitializedPreview = true;
+      
       const hoverPreview = document.getElementById('hover-preview');
       const previewImage = document.getElementById('preview-image');
       const buttons = document.querySelectorAll('.hover-preview-button');
+      
+      if (!hoverPreview || !previewImage || !buttons.length) return;
 
       function updatePosition(clientX, clientY) {
         const offset = 20;
@@ -365,7 +392,16 @@ function getSourceCodeIconPath(isOpenSource) {
         }
       }
 
+      // Remove existing event listeners to prevent duplicates
       buttons.forEach(button => {
+        const newButton = button.cloneNode(true);
+        if (button.parentNode) {
+          button.parentNode.replaceChild(newButton, button);
+        }
+      });
+
+      // Add new event listeners
+      document.querySelectorAll('.hover-preview-button').forEach(button => {
         button.addEventListener('mouseenter', (e) => {
           showPreview(button, e.clientX, e.clientY);
         });
@@ -388,6 +424,17 @@ function getSourceCodeIconPath(isOpenSource) {
       }, 100);
     }
 
+    // Reset initialization flag before page transitions
+    document.addEventListener('astro:before-swap', () => {
+      hasInitializedPreview = false;
+    });
+
+    // Use both event listeners for maximum compatibility
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializePreview);
+    } else {
+      initializePreview();
+    }
     document.addEventListener('astro:page-load', initializePreview);
   </script>
 </Layout>

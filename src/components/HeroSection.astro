@@ -200,49 +200,96 @@ const imagesRow3 = [
         </div>
         <div class="particle-container" id="particle-container"></div>
         <script>
-          function initializeParticles() {
+
+          let particleIntervalId;
+        
+          function generateParticle() {
             const button = document.getElementById('contact-button');
             const particleContainer = document.getElementById('particle-container');
             if (!button || !particleContainer) return;
-            let particleInterval;
-            function generateParticle() {
-              const buttonRect = button.getBoundingClientRect();
-              const particle = document.createElement('div');
-              particle.classList.add('particle');
-              particle.style.left = `${buttonRect.left + buttonRect.width / 2 - 5}px`;
-              particle.style.top = `${buttonRect.top + buttonRect.height / 2 - 5}px`;
-              const angle = Math.random() * 2 * Math.PI;
-              const distance = Math.random() * 150 + 130;
-              const horizontalFactor = 2.2;
-              const verticalFactor = 0.8;
-              const x = Math.cos(angle) * distance * horizontalFactor;
-              const y = Math.sin(angle) * distance * verticalFactor;
-              particle.style.setProperty('--x', `${x}px`);
-              particle.style.setProperty('--y', `${y}px`);
-              particleContainer.appendChild(particle);
-              setTimeout(() => {
-                if (particleContainer.contains(particle)) {
-                  particleContainer.removeChild(particle);
-                }
-              }, 1500);
-            }
-            function startParticles() {
-              particleInterval = setInterval(generateParticle, 150);
-            }
-            function stopParticles() {
-              clearInterval(particleInterval);
-            }
-            startParticles();
-            const container = document.querySelector('.button-container');
-            if (container) {
-              container.removeEventListener('mouseenter', stopParticles);
-              container.removeEventListener('mouseleave', startParticles);
-              container.addEventListener('mouseenter', stopParticles);
-              container.addEventListener('mouseleave', startParticles);
+        
+            const buttonRect = button.getBoundingClientRect();
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.left = `${buttonRect.left + buttonRect.width / 2 - 5}px`;
+            particle.style.top = `${buttonRect.top + buttonRect.height / 2 - 5}px`;
+            const angle = Math.random() * 2 * Math.PI;
+            const distance = Math.random() * 150 + 130;
+            const horizontalFactor = 2.2;
+            const verticalFactor = 0.8;
+            const x = Math.cos(angle) * distance * horizontalFactor;
+            const y = Math.sin(angle) * distance * verticalFactor;
+            particle.style.setProperty('--x', `${x}px`);
+            particle.style.setProperty('--y', `${y}px`);
+            particleContainer.appendChild(particle);
+        
+            setTimeout(() => {
+              if (particleContainer.contains(particle)) {
+                particleContainer.removeChild(particle);
+              }
+            }, 1500);
+          }
+        
+          function startParticles() {
+            stopParticles();
+            particleIntervalId = setInterval(generateParticle, 150);
+          }
+        
+          function stopParticles() {
+            if (particleIntervalId) {
+              clearInterval(particleIntervalId);
+              particleIntervalId = null;
             }
           }
+        
+
+          const handleMouseEnter = () => stopParticles();
+          const handleMouseLeave = () => startParticles();
+        
+          function initializeParticles() {
+
+            stopParticles();
+            
+            const particleContainer = document.getElementById('particle-container');
+            if (particleContainer) {
+
+              particleContainer.innerHTML = '';
+            }
+        
+            const button = document.getElementById('contact-button');
+            if (!button || !particleContainer) return;
+        
+            startParticles();
+        
+            const container = document.querySelector('.button-container');
+            if (container) {
+              container.removeEventListener('mouseenter', handleMouseEnter);
+              container.removeEventListener('mouseleave', handleMouseLeave);
+              container.addEventListener('mouseenter', handleMouseEnter);
+              container.addEventListener('mouseleave', handleMouseLeave);
+            }
+          }
+        
+          function cleanupParticles() {
+            stopParticles();
+            
+            const container = document.querySelector('.button-container');
+            if (container) {
+              container.removeEventListener('mouseenter', handleMouseEnter);
+              container.removeEventListener('mouseleave', handleMouseLeave);
+            }
+            
+            const particleContainer = document.getElementById('particle-container');
+            if (particleContainer) {
+              particleContainer.innerHTML = '';
+            }
+          }
+        
           document.addEventListener('astro:page-load', initializeParticles);
+          document.addEventListener('astro:before-swap', cleanupParticles);
+          document.addEventListener('astro:page-unload', cleanupParticles);
         </script>
+
         <script>
           function initializeEmailPopup() {
             const emailPopup = document.getElementById('email-popup');
