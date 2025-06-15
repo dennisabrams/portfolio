@@ -90,14 +90,14 @@ const imagesRow3 = [
     </div>
   </div>
 
-  <div id="hover-effect" class="relative z-10 w-full h-full flex items-start justify-center pointer-events-none mt-[4%] sm:mt-[6%] font-open">
-    <div class="w-full max-w-[1350px] h-full flex flex-col pointer-events-auto">
+  <div id="hover-effect" class="relative z-20 w-full h-full flex items-start justify-center pointer-events-none mt-[4%] sm:mt-[6%] font-open">
+    <div class="w-full max-w-[1350px] h-full flex flex-col pointer-events-auto relative z-30">
       <div class="hidden sm:block xl:hidden px-6 py-8">
         <div class="flex flex-col items-center text-center space-y-6">
           <div class="space-y-4">
             <h1 class="font-bold leading-tight text-[clamp(2.5rem,8vw,4rem)] pointer-events-none interactive-text">WEB &amp; LINUX</h1>
             <div class="flex items-center justify-center space-x-4">
-              <div class="relative w-[clamp(3rem,8vw,4rem)] h-[clamp(3rem,8vw,4rem)] group">
+              <div class="relative w-[clamp(2.5rem,6vw,3.5rem)] h-[clamp(2.5rem,6vw,3.5rem)] group">
                 <img
                   src="/images/dennisavatar.png"
                   alt="Avatar"
@@ -197,33 +197,70 @@ const imagesRow3 = [
 
       <div class="block sm:hidden px-4 py-6">
         <div class="flex flex-col space-y-6">
-          <img
-            src="/images/dennisavatar.png"
-            alt="Avatar"
-            class="w-[clamp(4rem,15vw,6rem)] h-[clamp(4rem,15vw,6rem)] object-cover rounded-full"
-          />
+          <div class="relative w-[clamp(4rem,15vw,6rem)] h-[clamp(4rem,15vw,6rem)] group">
+            <img
+              src="/images/dennisavatar.png"
+              alt="Avatar"
+              class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 group-hover:opacity-0 pointer-events-none select-none avatar-normal rounded-full"
+            />
+            <img
+              src="/images/dennisavatarhover.png"
+              alt="Avatar Hover"
+              class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0 group-hover:opacity-100 pointer-events-none select-none avatar-hover rounded-full"
+            />
+          </div>
           <div class="space-y-2">
             <h1 class="font-extrabold leading-tight text-[clamp(1.5rem,8vw,2.5rem)] text-white">WEB &amp; LINUX</h1>
             <h1 class="font-extrabold leading-tight text-[clamp(1.5rem,8vw,2.5rem)] text-white">STACK DEVELOPER</h1>
           </div>
-
         </div>
       </div>
 
-      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-6 xl:gap-20 mt-[4%] sm:mt-[6%] xl:mt-[8%] px-4 sm:px-6 xl:px-[8%]">
-        <a
-          href="https://github.com/dennisabrams"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 justify-center px-4 sm:px-5 xl:px-6 py-2 sm:py-3 bg-black/50 rounded-md hover:bg-white/30 transition-colors whitespace-nowrap shrink-0 text-sm sm:text-base min-h-[44px]"
-        >
-          <img
-            src="https://img.icons8.com/ios11/512/FFFFFF/github.png"
-            alt="GitHub"
-            class="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover"
-          />
-          <span class="font-semibold">dennisabrams</span>
-        </a>
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-6 xl:gap-20 mt-[4%] sm:mt-[6%] xl:mt-[8%] px-4 sm:px-6 xl:px-[8%] pb-16 sm:pb-20 xl:pb-16">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-0">
+          <a
+            href="https://github.com/dennisabrams"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 justify-center px-4 sm:px-5 xl:px-6 py-2 sm:py-3 bg-black/50 rounded-md hover:bg-white/30 transition-colors whitespace-nowrap shrink-0 text-sm sm:text-base min-h-[44px]"
+          >
+            <img
+              src="https://img.icons8.com/ios11/512/FFFFFF/github.png"
+              alt="GitHub"
+              class="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover"
+            />
+            <span class="font-semibold">dennisabrams</span>
+          </a>
+          <div class="flex sm:hidden items-center text-white ml-4">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 256 256" class="w-8 h-8 fill-current mr-2" aria-hidden="true">
+              <defs>
+                <style>
+                  @keyframes moveUpDown {
+                    0% { transform: translateY(0); }
+                    50% { transform: translateY(-5px); }
+                    100% { transform: translateY(0); }
+                  }
+                  .red-marker {
+                    animation: moveUpDown 3s ease-in-out infinite;
+                  }
+                </style>
+              </defs>
+              <g transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)" style="fill: none; stroke: none;">
+                <polygon points="88,83.29 2,83.29 17.59,55.42 39.4,55.42 45,55.42 50.6,55.42 72.42,55.42" style="fill: rgb(14,171,97);" />
+                <polygon points="2,83.29 76.76,63.2 88,83.29" style="fill: rgb(21,155,225);" />
+                <path d="M1.999 85.294c-.882 0-1.69-.589-1.93-1.481-.287-1.067.346-2.164 1.413-2.451l74.762-20.098c1.068-.287 2.165.346 2.451 1.412.286 1.067-.346 2.164-1.412 2.451L2.519 85.224c-.173.047-.348.07-.52.07z" style="fill: rgb(254,217,65);" />
+                <path d="M63.1 79.329c-.57 0-1.137-.243-1.532-.714l-7.166-8.535c-.711-.846-.601-2.107.245-2.817.846-.711 2.108-.6 2.817.245l7.166 8.535c.711.846.601 2.107-.245 2.817-.405.471-.961.469-1.451.469z" style="fill: rgb(254,217,65);" />
+                <path d="M34.66 76.513c-.57 0-1.137-.243-1.533-.714l-9.818-11.694c-.71-.846-.6-2.107.246-2.818.847-.709 2.108-.599 2.818.246l9.818 11.694c.71.846.6 2.107-.246 2.818-.406.471-.962.468-1.285.468z" style="fill: rgb(254,217,65);" />
+                <path d="M88 85.293H2c-.709 0-1.366-.376-1.725-.988-.359-.612-.367-1.368-.021-1.987L15.84 54.444c.354-.633 1.021-1.024 1.746-1.024h54.83c.725 0 1.393.392 1.746 1.024l15.585 27.873c.346.619.338 1.375-.021 1.987-.359.612-1.016.988-1.726.988zM5.41 81.293h79.18L71.242 57.42H18.758L5.41 81.293z" style="fill: rgb(188,220,254);" />
+                <g class="red-marker">
+                  <path d="M42.52 18.239c-7.702 1.189-13.385 8.127-13.166 15.917.063 2.236.589 4.383 1.565 6.387 1.72 3.45 7.145 12.622 12.392 21.492.759 1.285 2.618 1.285 3.377 0l.01-.018c5.242-8.863 10.662-18.026 12.385-21.484.006-.012.012-.024.018-.035 1.028-2.128 1.549-4.416 1.549-6.8.001-9.984-8.407-17.502-18.131-16.001z" style="fill: rgb(203,0,16);" />
+                  <circle cx="45.02" cy="33.42" r="6" style="fill: rgb(255,255,255);" />
+                </g>
+              </g>
+            </svg>
+            <p class="text-sm font-handrawn tracking-wide">Based in Hanover</p>
+          </div>
+        </div>
         <p class="order-0 sm:order-1 max-w-lg text-sm sm:text-base leading-relaxed text-zinc-300 font-medium z-30">
           Hello, I am Dennis – a developer working with <b>PHP</b>, <b>JS Frameworks</b>, and <b>Lua</b> for app modifications. I manage <b>Linux servers</b>, automate tasks with <b>Bash scripting</b>, <span class="text-zinc-400">and create visuals using <b>After Effects</b> as a hobby,</span> separate from programming.
         </p>
@@ -268,9 +305,13 @@ const imagesRow3 = [
             particle.style.left = `${buttonRect.left + buttonRect.width / 2 - 5}px`;
             particle.style.top = `${buttonRect.top + buttonRect.height / 2 - 5}px`;
             const angle = Math.random() * 2 * Math.PI;
-            const distance = Math.random() * 150 + 130;
-            const horizontalFactor = 2.2;
-            const verticalFactor = 0.8;
+
+            // Mobile-responsive particle spread
+            const isMobile = window.innerWidth < 640;
+            const distance = isMobile ? Math.random() * 140 + 120 : Math.random() * 150 + 130;
+            const horizontalFactor = isMobile ? 1.8 : 2.2;
+            const verticalFactor = isMobile ? 0.7 : 0.8;
+
             const x = Math.cos(angle) * distance * horizontalFactor;
             const y = Math.sin(angle) * distance * verticalFactor;
             particle.style.setProperty('--x', `${x}px`);
@@ -374,23 +415,85 @@ const imagesRow3 = [
         </script>
         <script>
           function initializeAvatarHover() {
-            const normalImg = document.querySelector('.avatar-normal');
-            const hoverImg = document.querySelector('.avatar-hover');
-            if (normalImg && hoverImg) {
-              if (normalImg.hoverTimeout) clearTimeout(normalImg.hoverTimeout);
-              if (hoverImg.hoverTimeout) clearTimeout(hoverImg.hoverTimeout);
-              function simulateHover() {
-                normalImg.classList.add('opacity-0');
-                hoverImg.classList.add('opacity-100');
-                normalImg.hoverTimeout = setTimeout(() => {
-                  normalImg.classList.remove('opacity-0');
-                  hoverImg.classList.remove('opacity-100');
-                }, 2000);
-              }
-              hoverImg.hoverTimeout = setTimeout(simulateHover, 3000);
+            // Get all avatar pairs across all breakpoints
+            const normalImgs = document.querySelectorAll('.avatar-normal');
+            const hoverImgs = document.querySelectorAll('.avatar-hover');
+
+            // Clear any existing timeouts
+            normalImgs.forEach(img => {
+              if (img.hoverTimeout) clearTimeout(img.hoverTimeout);
+              if (img.returnTimeout) clearTimeout(img.returnTimeout);
+            });
+
+            hoverImgs.forEach(img => {
+              if (img.hoverTimeout) clearTimeout(img.hoverTimeout);
+              if (img.returnTimeout) clearTimeout(img.returnTimeout);
+            });
+
+            function simulateHover() {
+              // Apply hover effect to all avatar instances
+              normalImgs.forEach(img => {
+                img.classList.add('opacity-0');
+              });
+
+              hoverImgs.forEach(img => {
+                img.classList.add('opacity-100');
+              });
+
+              // Return to normal state after 3 seconds
+              const returnTimeout = setTimeout(() => {
+                normalImgs.forEach(img => {
+                  img.classList.remove('opacity-0');
+                });
+
+                hoverImgs.forEach(img => {
+                  img.classList.remove('opacity-100');
+                });
+              }, 3000);
+
+              // Store timeout references for cleanup
+              normalImgs.forEach(img => {
+                img.returnTimeout = returnTimeout;
+              });
             }
+
+            // Start automatic hover effect after 2 seconds
+            const hoverTimeout = setTimeout(simulateHover, 2000);
+
+            // Store timeout references for cleanup
+            normalImgs.forEach(img => {
+              img.hoverTimeout = hoverTimeout;
+            });
           }
+
+          function cleanupAvatarHover() {
+            const normalImgs = document.querySelectorAll('.avatar-normal');
+            const hoverImgs = document.querySelectorAll('.avatar-hover');
+
+            // Clear all timeouts
+            normalImgs.forEach(img => {
+              if (img.hoverTimeout) clearTimeout(img.hoverTimeout);
+              if (img.returnTimeout) clearTimeout(img.returnTimeout);
+            });
+
+            hoverImgs.forEach(img => {
+              if (img.hoverTimeout) clearTimeout(img.hoverTimeout);
+              if (img.returnTimeout) clearTimeout(img.returnTimeout);
+            });
+
+            // Reset to normal state
+            normalImgs.forEach(img => {
+              img.classList.remove('opacity-0');
+            });
+
+            hoverImgs.forEach(img => {
+              img.classList.remove('opacity-100');
+            });
+          }
+
           document.addEventListener('astro:page-load', initializeAvatarHover);
+          document.addEventListener('astro:before-swap', cleanupAvatarHover);
+          document.addEventListener('astro:page-unload', cleanupAvatarHover);
         </script>
         <script>
           function initializeInteractiveText() {

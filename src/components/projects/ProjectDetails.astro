@@ -33,19 +33,6 @@ const sections = await Promise.all(
     flex-direction: column;
     align-items: center;
     margin: 0.8rem 0 30px;
-    margin-left: 1.5rem;
-  }
-
-  @media (max-width: 1023px) {
-    .busstop-navigation {
-      margin-left: 1rem;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .busstop-navigation {
-      margin-left: 0.75rem;
-    }
   }
 
   .busstop-line {
@@ -170,11 +157,11 @@ const sections = await Promise.all(
             aria-label={`Scroll to ${section.title}`}
           >
             <span class="busstop-label group-hover:text-white transition-all flex items-center">
-              <span class="hidden lg:block">{section.title}</span>
+              <span class="hidden xl:block">{section.title}</span>
               <img
                 src={section.icon}
                 alt={section.title}
-                class="w-6 h-6 xs:w-7 xs:h-7 lg:ml-2 mr-3 xs:mr-4 transition-all duration-300 ease-in-out busstop-icon group-hover:brightness-0 group-hover:invert"
+                class="w-6 h-6 xs:w-5 xs:h-5 lg:ml-2 mr-3 xs:mr-4 transition-all duration-300 ease-in-out busstop-icon group-hover:brightness-0 group-hover:invert"
               />
             </span>
             <div class="busstop-marker"></div>
