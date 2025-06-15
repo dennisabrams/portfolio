@@ -4,14 +4,35 @@
 <div class="console-container max-w-4xl mx-auto px-4 mt-12">
   <div class="console-window bg-gray-800/20 backdrop-blur-sm rounded-t-lg shadow-2xl relative overflow-hidden border-t border-l border-r border-white/10">
     <div class="console-content bg-transparent p-4 sm:p-6 font-mono text-sm text-green-400 relative min-h-fit">
-      <div class="space-y-4">
-        <div id="console-output" class="space-y-1">
+      <!-- Mobile Layout: Vertical Stack -->
+      <div class="block sm:hidden space-y-4">
+        <div id="console-output-mobile" class="space-y-1">
         </div>
 
         <div class="text-left text-xs text-gray-400 leading-relaxed border-t border-gray-700/50 pt-4">
           <div class="mb-2 text-gray-500">// Behind the scenes</div>
           <div class="mb-3">
             This site wasn’t built with a template or CMS. It’s manually coded using components and utility-based styling.
+          </div>
+          <div class="mb-3">
+            Curious about the architecture? The complete source code is available for exploration.
+          </div>
+          <a href="https://github.com/dennisabrams/portfolio" target="_blank" rel="noopener noreferrer"
+             class="text-blue-400 hover:text-blue-300 transition-colors underline decoration-dotted">
+            View on GitHub →
+          </a>
+        </div>
+      </div>
+
+      <!-- Desktop Layout: Side by Side -->
+      <div class="hidden sm:flex justify-between items-start gap-8">
+        <div id="console-output-desktop" class="space-y-1 flex-1">
+        </div>
+
+        <div class="text-right text-xs text-gray-400 leading-relaxed max-w-xs flex-shrink-0">
+          <div class="mb-2 text-gray-500">// Behind the scenes</div>
+          <div class="mb-3">
+            This site wasn't built with a template or CMS. It's manually coded using components and utility-based styling.
           </div>
           <div class="mb-3">
             Curious about the architecture? The complete source code is available for exploration.
@@ -46,18 +67,31 @@
   });
 
   document.addEventListener('astro:page-load', function() {
-    const output = document.getElementById('console-output');
+    const outputMobile = document.getElementById('console-output-mobile');
+    const outputDesktop = document.getElementById('console-output-desktop');
 
-    if (!output) return;
+    if (!outputMobile && !outputDesktop) return;
 
-    output.innerHTML = '';
+    if (outputMobile) outputMobile.innerHTML = '';
+    if (outputDesktop) outputDesktop.innerHTML = '';
     const navigationTime = performance.now() - navigationStartTime;
 
     function addLine(text, className = 'text-green-400') {
-      const line = document.createElement('div');
-      line.className = className;
-      line.textContent = text;
-      output.appendChild(line);
+      // Add to mobile output
+      if (outputMobile) {
+        const lineMobile = document.createElement('div');
+        lineMobile.className = className;
+        lineMobile.textContent = text;
+        outputMobile.appendChild(lineMobile);
+      }
+
+      // Add to desktop output
+      if (outputDesktop) {
+        const lineDesktop = document.createElement('div');
+        lineDesktop.className = className;
+        lineDesktop.textContent = text;
+        outputDesktop.appendChild(lineDesktop);
+      }
     }
 
     function formatTime(time) {
@@ -80,17 +114,34 @@
       return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
 
-    const analyzingLine = document.createElement('div');
-    analyzingLine.className = 'text-white flex items-center space-x-2';
-    analyzingLine.innerHTML = `
-      <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-lg mr-1" style="box-shadow: 0 0 10px #4ade80, 0 0 20px #4ade80, 0 0 30px #4ade80;"></div>
-      <span>Analyzing page performance...</span>
-    `;
-    output.appendChild(analyzingLine);
+    // Add analyzing line to both outputs
+    if (outputMobile) {
+      const analyzingLineMobile = document.createElement('div');
+      analyzingLineMobile.className = 'text-white flex items-center space-x-2';
+      analyzingLineMobile.innerHTML = `
+        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-lg mr-1" style="box-shadow: 0 0 10px #4ade80, 0 0 20px #4ade80, 0 0 30px #4ade80;"></div>
+        <span>Analyzing page performance...</span>
+      `;
+      outputMobile.appendChild(analyzingLineMobile);
 
-    const blankLine = document.createElement('div');
-    blankLine.innerHTML = '&nbsp;';
-    output.appendChild(blankLine);
+      const blankLineMobile = document.createElement('div');
+      blankLineMobile.innerHTML = '&nbsp;';
+      outputMobile.appendChild(blankLineMobile);
+    }
+
+    if (outputDesktop) {
+      const analyzingLineDesktop = document.createElement('div');
+      analyzingLineDesktop.className = 'text-white flex items-center space-x-2';
+      analyzingLineDesktop.innerHTML = `
+        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-lg mr-1" style="box-shadow: 0 0 10px #4ade80, 0 0 20px #4ade80, 0 0 30px #4ade80;"></div>
+        <span>Analyzing page performance...</span>
+      `;
+      outputDesktop.appendChild(analyzingLineDesktop);
+
+      const blankLineDesktop = document.createElement('div');
+      blankLineDesktop.innerHTML = '&nbsp;';
+      outputDesktop.appendChild(blankLineDesktop);
+    }
 
     function showPerformanceData() {
       addLine('=== NAVIGATION TIMING ===', 'text-cyan-400');
