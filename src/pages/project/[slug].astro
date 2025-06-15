@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import ProjectDetails from '../../components/projects/ProjectDetails.astro';
 import { projects } from '../../data/projectsData.js';
 import { Image } from 'astro:assets';
+import Console from '../../components/Console.astro';
 
 export async function getStaticPaths() {
   return projects.map((project) => ({
@@ -88,18 +89,6 @@ function getSourceCodeIconPath(isOpenSource) {
       margin-right: 0.5rem;
     }
 
-    .flex.items-center.text-gray-400 {
-      display: flex;
-      align-items: center;
-      color: #a0aec0;
-    }
-
-    .inline-flex.items-center.gap-2.justify-center {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
     #hover-preview::before {
       content: "";
       position: absolute;
@@ -177,10 +166,35 @@ function getSourceCodeIconPath(isOpenSource) {
 
   <div class="lamp-light" data-light-r={project.lightColor.r} data-light-g={project.lightColor.g} data-light-b={project.lightColor.b}></div>
 
+  <div class="xl:hidden">
+    <a
+      href={`/project/${encodeURIComponent(previousProject.slug)}`}
+      class="hover-preview-button flex items-center text-gray-300 hover:text-white transition-all duration-300 px-4 py-3 text-sm font-bold fixed top-32 left-4 z-40 hover:bg-blue-500 rounded-lg backdrop-blur-sm shadow-lg hover:shadow-xl transform hover:scale-105"
+      aria-label={`Previous Project: ${previousProject.name}`}
+      data-preview-src={previousProject.preview}
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+      Previous Project
+    </a>
+    <a
+      href={`/project/${encodeURIComponent(nextProject.slug)}`}
+      class="hover-preview-button flex items-center text-gray-300 hover:text-white transition-all duration-300 px-4 py-3 text-sm font-bold fixed top-32 right-4 z-40 bg-blue-500/80 hover:bg-blue-500 rounded-lg backdrop-blur-sm shadow-lg hover:shadow-xl transform hover:scale-105"
+      aria-label={`Next Project: ${nextProject.name}`}
+      data-preview-src={nextProject.preview}
+    >
+      Next Project
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </a>
+  </div>
+
   <div class="relative flex items-start justify-center min-h-screen font-open">
     <a
       href={`/project/${encodeURIComponent(previousProject.slug)}`}
-      class="sticky-button hover-preview-button font-bold lg:left-[-50px] flex items-center justify-center bg-opacity-75 hover:bg-opacity-100 text-gray-300 px-4 transition duration-300 z-20 h-16 md:static md:mb-4"
+      class="sticky-button hover-preview-button font-bold xl:left-[-50px] items-center justify-center bg-opacity-75 hover:bg-opacity-100 text-gray-300 px-4 transition duration-300 z-20 h-16 hidden xl:flex"
       aria-label="Go Back"
       data-preview-src={previousProject.preview}
     >
@@ -190,9 +204,9 @@ function getSourceCodeIconPath(isOpenSource) {
       Previous Project
     </a>
 
-    <div class="max-w-[900px] w-full px-4 mt-12">
-      <div class="flex flex-col lg:flex-row items-center w-full overflow-hidden pb-12">
-        <div class="w-full lg:w-1/2 p-6">
+    <div class="max-w-[900px] w-full px-4 mt-12 xl:mt-12 pt-16 xl:pt-0">
+      <div class="flex flex-col xl:flex-row items-center w-full overflow-hidden pb-12">
+        <div class="w-full xl:w-1/2 p-6">
           <h2 class="text-4xl font-bold text-white mb-4">{project.name}</h2>
           <p class="text-gray-400">{project.description}</p>
           <br />
@@ -222,18 +236,18 @@ function getSourceCodeIconPath(isOpenSource) {
               href={project.openSource}
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 justify-center px-6 py-3 bg-white/20 rounded-md hover:bg-white/30 transition-colors whitespace-nowrap shrink-0"
+              class="inline-flex items-center gap-2 justify-center px-4 sm:px-6 py-3 bg-white/20 rounded-md hover:bg-white/30 transition-colors max-w-full"
             >
               <img
                 src="/icons/github.svg"
                 alt="GitHub Logo"
-                class="w-6 h-6 object-contain"
+                class="w-5 h-5 sm:w-6 sm:h-6 object-contain flex-shrink-0"
               />
-              <span class="font-semibold">{gitHubTitle}</span>
+              <span class="font-semibold text-sm sm:text-base truncate min-w-0">{gitHubTitle}</span>
             </a>
           )}
         </div>
-        <div class="w-full lg:w-1/2 p-6 relative image-container">
+        <div class="w-full xl:w-1/2 p-6 relative image-container">
           <div
             class="eclipse"
             style={`background: radial-gradient(ellipse at center, ${project.color}, transparent 70%);`}
@@ -257,10 +271,9 @@ function getSourceCodeIconPath(isOpenSource) {
         <ProjectDetails project={project} />
       </div>
     </div>
-
     <a
       href={`/project/${encodeURIComponent(nextProject.slug)}`}
-      class="sticky-button hover-preview-button mt-44 font-bold lg:right-[-50px] rounded-tl-3xl rounded-br-3xl rounded-sm bg-blue-500 flex items-center justify-center bg-opacity-75 hover:bg-opacity-100 text-gray-300 px-4 transition duration-300 z-20 h-14 md:static md:mb-4"
+      class="sticky-button hover-preview-button mt-44 font-bold xl:right-[-50px] rounded-tl-3xl rounded-br-3xl rounded-sm bg-blue-500 items-center justify-center bg-opacity-75 hover:bg-opacity-100 text-gray-300 px-4 transition duration-300 z-20 h-14 hidden xl:flex"
       aria-label="Next Project"
       data-preview-src={nextProject.preview}
     >
@@ -275,8 +288,11 @@ function getSourceCodeIconPath(isOpenSource) {
     <img id="preview-image" src="" alt="Project Preview" />
   </div>
 
+    <section id="console">
+    <Console />
+  </section>
+
   <script>
-    // Store references to event listeners and animation frames
     let lampRafId = null;
     let lampLightActive = true;
     let hasInitializedLamp = false;
@@ -299,7 +315,7 @@ function getSourceCodeIconPath(isOpenSource) {
       const g = Math.round(baseG + (255 - baseG) * progress);
       const b = Math.round(baseB + (255 - baseB) * progress);
       const alpha = 0.15 + (0.2 - 0.15) * (1 - progress);
-      lampLight.style.background = `radial-gradient(
+      (lampLight as HTMLElement).style.background = `radial-gradient(
         circle at 50% 0%,
         rgba(${r}, ${g}, ${b}, ${alpha}) 10%,
         rgba(${r}, ${g}, ${b}, ${alpha - 0.1}) 30%,
@@ -309,13 +325,11 @@ function getSourceCodeIconPath(isOpenSource) {
     }
 
     function initLampLight() {
-      // Prevent double initialization
       if (hasInitializedLamp) return;
       hasInitializedLamp = true;
-      
-      // Clean up any existing animation
+
       cleanupLampLight();
-      
+
       if (!document.querySelector('.lamp-light')) return;
       lampLightActive = true;
       updateLampLight();
@@ -329,12 +343,9 @@ function getSourceCodeIconPath(isOpenSource) {
       }
     }
 
-    // Reset initialization flag before page transitions
     document.addEventListener('astro:before-swap', () => {
       hasInitializedLamp = false;
     });
-
-    // Use both event listeners for maximum compatibility
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initLampLight);
     } else {
@@ -355,14 +366,13 @@ function getSourceCodeIconPath(isOpenSource) {
     });
 
     function initializePreview() {
-      // Prevent double initialization
       if (hasInitializedPreview) return;
       hasInitializedPreview = true;
-      
+
       const hoverPreview = document.getElementById('hover-preview');
       const previewImage = document.getElementById('preview-image');
       const buttons = document.querySelectorAll('.hover-preview-button');
-      
+
       if (!hoverPreview || !previewImage || !buttons.length) return;
 
       function updatePosition(clientX, clientY) {
@@ -386,13 +396,12 @@ function getSourceCodeIconPath(isOpenSource) {
       function showPreview(button, clientX, clientY) {
         const imgSrc = button.getAttribute('data-preview-src');
         if (imgSrc) {
-          previewImage.src = imgSrc;
+          (previewImage as HTMLImageElement).src = imgSrc;
           hoverPreview.classList.add('visible');
           updatePosition(clientX, clientY);
         }
       }
 
-      // Remove existing event listeners to prevent duplicates
       buttons.forEach(button => {
         const newButton = button.cloneNode(true);
         if (button.parentNode) {
@@ -400,16 +409,15 @@ function getSourceCodeIconPath(isOpenSource) {
         }
       });
 
-      // Add new event listeners
       document.querySelectorAll('.hover-preview-button').forEach(button => {
         button.addEventListener('mouseenter', (e) => {
-          showPreview(button, e.clientX, e.clientY);
+          showPreview(button, (e as MouseEvent).clientX, (e as MouseEvent).clientY);
         });
         button.addEventListener('mouseleave', () => {
           hoverPreview.classList.remove('visible');
         });
         button.addEventListener('mousemove', (e) => {
-          updatePosition(e.clientX, e.clientY);
+          updatePosition((e as MouseEvent).clientX, (e as MouseEvent).clientY);
         });
       });
 
@@ -424,12 +432,9 @@ function getSourceCodeIconPath(isOpenSource) {
       }, 100);
     }
 
-    // Reset initialization flag before page transitions
     document.addEventListener('astro:before-swap', () => {
       hasInitializedPreview = false;
     });
-
-    // Use both event listeners for maximum compatibility
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initializePreview);
     } else {

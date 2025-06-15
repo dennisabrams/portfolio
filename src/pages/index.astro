@@ -2,14 +2,19 @@
 import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/HeroSection.astro';
 import ProjectsCarousel from '../components/projects/ProjectsCarousel.astro';
+import Console from '../components/Console.astro';
 ---
 
 <Layout>
-  <section id="summary">
+  <section id="summary" class="pt-16 sm:pt-20 lg:pt-28">
     <HeroSection />
   </section>
 
-  <section id="projects">
+  <section id="projects" class="pt-8 sm:pt-12 lg:pt-16">
     <ProjectsCarousel />
+  </section>
+
+  <section id="console">
+    <Console />
   </section>
 </Layout>

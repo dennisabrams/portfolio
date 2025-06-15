@@ -1,11 +1,29 @@
 <nav class="sticky top-0 left-0 right-0 z-50 w-full backdrop-blur">
-  <div id="squishyNav" class="max-w-[1350px] mx-auto flex items-center justify-between pl-[clamp(0px,8vw,108px)] pr-[clamp(0px,8vw,108px)] font-open h-28 transition-all duration-300">
-    <div id="logoBreadcrumb" class="text-xl font-bold"></div>
-    <div class="md:flex items-center space-x-8 text-sm font-extrabold">
-      <a href="/#summary" data-target="summary" class="nav-link hover:text-gray-300 transition-colors duration-1000">SUMMARY</a>
-      <a href="/#projects" data-target="projects" class="nav-link hover:text-gray-300 transition-colors duration-1000">PROJECTS</a>
+  <div id="squishyNav" class="max-w-[1350px] mx-auto flex items-center justify-between px-4 sm:pl-[clamp(0px,8vw,108px)] sm:pr-[clamp(0px,8vw,108px)] font-open h-16 sm:h-20 lg:h-28 transition-all duration-300">
+    <div id="logoBreadcrumb" class="text-xs sm:text-base lg:text-xl font-bold truncate max-w-[60%] sm:max-w-none"></div>
+
+    <div class="flex sm:hidden items-center space-x-1 xs:space-x-2 sm:space-x-3 text-xs font-extrabold">
+      <a href="/#summary" data-target="summary" class="nav-link hover:text-gray-300 transition-colors duration-1000 px-1 xs:px-1.5 py-1 min-h-[44px] flex items-center">SUMMARY</a>
+      <a href="/#projects" data-target="projects" class="nav-link hover:text-gray-300 transition-colors duration-1000 px-1 xs:px-1.5 py-1 min-h-[44px] flex items-center">PROJECTS</a>
+      <div class="relative group flex items-center">
+        <div class="flex items-center cursor-pointer hover:text-gray-300 space-x-0.5 xs:space-x-1 py-1 min-h-[44px]">
+          <span class="text-xs">DE</span>
+          <svg class="w-3 h-2 rounded overflow-hidden" style="filter: drop-shadow(0 0 1px rgba(255,255,255,0.2));" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55.2 38.4">
+            <g fill-rule="evenodd" clip-rule="evenodd">
+              <path d="M3.03 0h49.13c1.67 0 3.03 1.36 3.03 3.03v32.33c0 1.66-1.36 3.02-3.02 3.03H3.02C1.36 38.4 0 37.03 0 35.37V3.03C0 1.36 1.36 0 3.03 0z"></path>
+              <path d="M0 12.8h55.2v22.57c0 1.67-1.36 3.03-3.03 3.03H3.03C1.36 38.4 0 37.04 0 35.37V12.8z" fill="#d00"></path>
+              <path d="M0 25.6h55.2v9.77c0 1.66-1.36 3.02-3.02 3.03H3.03A3.04 3.04 0 010 35.37V25.6z" fill="#ffce00"></path>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="hidden sm:flex items-center space-x-4 lg:space-x-8 text-sm font-extrabold">
+      <a href="/#summary" data-target="summary" class="nav-link hover:text-gray-300 transition-colors duration-1000 px-2 py-1 min-h-[44px] flex items-center">SUMMARY</a>
+      <a href="/#projects" data-target="projects" class="nav-link hover:text-gray-300 transition-colors duration-1000 px-2 py-1 min-h-[44px] flex items-center">PROJECTS</a>
       <div class="relative group h-full flex items-center">
-        <div class="flex items-center h-full cursor-pointer hover:text-gray-300 space-x-2">
+        <div class="flex items-center h-full cursor-pointer hover:text-gray-300 space-x-2 px-2 py-1 min-h-[44px]">
           <span>LANGUAGE</span>
           <svg class="w-5 h-3 rounded overflow-hidden" style="filter: drop-shadow(0 0 1px rgba(255,255,255,0.2));" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55.2 38.4">
             <g fill-rule="evenodd" clip-rule="evenodd">
@@ -106,17 +124,22 @@
       const homeLink = document.createElement("a");
       homeLink.href = "/";
       homeLink.className = "hover:text-blue-500 transition-colors duration-500";
+
+      const isMobile = window.innerWidth < 640;
       homeLink.textContent = "ABRAMS";
       logoBreadcrumb.appendChild(homeLink);
-      const pathSegments = window.location.pathname.split("/").filter(Boolean);
+
+      const pathSegments = window.location.pathname.split("/").filter(Boolean).filter(segment => segment !== "project");
       function transformSegment(seg) {
-        return seg.toUpperCase();
+        const upperSeg = seg.toUpperCase();
+        return isMobile && upperSeg.length > 8 ? upperSeg.substring(0, 8) + "..." : upperSeg;
       }
+
       if (pathSegments.length > 0) {
         pathSegments.forEach((segment) => {
           const arrow = document.createElement("span");
-          arrow.className = "mx-4 inline-block";
-          arrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          arrow.className = isMobile ? "mx-0.5 xs:mx-1 inline-block" : "mx-4 inline-block";
+          arrow.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
           </svg>`;
           const segSpan = document.createElement("span");

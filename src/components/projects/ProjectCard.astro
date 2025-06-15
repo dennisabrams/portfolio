@@ -22,7 +22,7 @@ const { name, category = [], description, image, link, color } = Astro.props;
 
 <a
   href={link}
-  class="group block relative w-full max-w-[450px] aspect-[4/3] mx-auto rounded-xl overflow-hidden shadow-lg font-open"
+  class="group block relative w-full max-w-[85vw] sm:max-w-[450px] xl:max-w-[450px] aspect-[4/3] mx-auto rounded-xl overflow-hidden shadow-lg font-open"
 >
   <div class="relative w-full h-full">
     <Image
@@ -30,35 +30,35 @@ const { name, category = [], description, image, link, color } = Astro.props;
       alt={`${name} Image`}
       width={800}
       height={600}
-      class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-110 rounded-xl"
+      class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110 rounded-xl"
       formats={['webp', 'avif', 'jpeg']}
       loading="lazy"
     />
 
-    <div class="absolute bottom-4 left-4 right-4 bg-black/80 text-white p-4 rounded-md shadow-md">
-      <div class="absolute -top-3 right-3 flex flex-row flex-wrap gap-2">
+    <div class="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 right-2 sm:right-4 bg-black/80 text-white p-3 sm:p-4 rounded-md shadow-md">
+      <div class="absolute -top-3 sm:-top-4 right-2 sm:right-3 left-2 sm:left-3 flex flex-row flex-wrap gap-1 sm:gap-2 justify-end items-start">
         {category.map((cat) => {
           const iconSrc = categoryIcons[cat];
           const bgColorClass = categoryStyles[cat];
 
           return (
-            <span class={`text-white text-xs sm:text-sm px-2 py-1 rounded-full shadow font-bold flex items-center mb-1 ${bgColorClass}`}>
+            <span class={`text-white text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full shadow font-bold flex items-center flex-shrink-0 ${bgColorClass}`}>
               {cat}
               <img
                 src={iconSrc}
                 alt={`${cat} icon`}
-                class="w-4 h-4 ml-1"
+                class="w-3 h-3 sm:w-4 sm:h-4 ml-1 flex-shrink-0"
               />
             </span>
           );
         })}
       </div>
 
-      <h2 class="font-bold text-base sm:text-lg mb-2">
+      <h2 class="font-bold text-sm sm:text-base xl:text-lg mb-1 sm:mb-2 mt-2 sm:mt-3">
         {name}
       </h2>
 
-      <p class="text-xs sm:text-xs text-zinc-300 font-medium">
+      <p class="text-xs text-zinc-300 font-medium leading-relaxed">
         {description}
       </p>
     </div>

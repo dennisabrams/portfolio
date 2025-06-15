@@ -5,9 +5,9 @@ import mdx from '@astrojs/mdx';
 
 export default defineConfig({
   site: "https://dennis-abrams.com",
-  experimental: {
+  /*   experimental: {
     responsiveImages: true,
     svg: true,
-  },
+  }, */
   integrations: [sitemap(), mdx()],
 });

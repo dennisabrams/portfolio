@@ -2,15 +2,19 @@
 title: "Technologies"
 icon: "/icons/tech.svg"
 ---
-import { Image } from 'astro:assets';
-import luaIcon from 'public/icons/lua.svg';
-import sourceIcon from 'public/icons/source-engine.svg';
 
-<div class="flex items-start max-w-prose my-4 p-4">
-  <Image src={sourceIcon} alt="Custom Diagram" width={70} class="mx-auto" />
-  <Image src={luaIcon} alt="Lua" width={70} class="ml-4" />
-  <p class="pl-6">
-    While Project X.E.N.O. behaves like an <b>AI enemy</b>, its actions are driven by scripted routines that handle targeting and movement.
+import { Image } from "astro:assets";
+import luaIcon from "public/icons/lua.svg";
+import sourceIcon from "public/icons/source-engine.svg";
+
+<div class="flex flex-col xl:flex-row xl:items-start max-w-prose my-4 p-4">
+  <div class="flex flex-row items-start gap-1 xl:gap-4 mb-4 xl:mb-0 xl:flex-shrink-0">
+    <Image src={sourceIcon} alt="Custom Diagram" width={70} class="" />
+    <Image src={luaIcon} alt="Lua" width={70} class="" />
+  </div>
+  <p class="text-left xl:pl-6 mt-0 xl:mt-0">
+    While Project X.E.N.O. behaves like an <b>AI enemy</b>, its actions are
+    driven by scripted routines that handle targeting and movement.
   </p>
 </div>
 

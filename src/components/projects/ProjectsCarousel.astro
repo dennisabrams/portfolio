@@ -1,5 +1,6 @@
 ---
 import ProjectCard from './ProjectCard.astro';
+import ProjectsGrid from './ProjectsGrid.astro';
 import { projects } from '../../data/projectsData.js';
 import { ClientRouter } from 'astro:transitions';
 ---
@@ -24,7 +25,16 @@ import { ClientRouter } from 'astro:transitions';
       dragThreshold: 80,
       startAt: savedSlideIndex,
       breakpoints: {
-        768: { peek: 0, gap: 0 }
+        640: {
+          peek: 0,
+          gap: 0,
+          dragThreshold: 60
+        },
+        1250: {
+          peek: 50,
+          gap: 0,
+          dragThreshold: 70
+        }
       }
     });
 
@@ -54,11 +64,10 @@ import { ClientRouter } from 'astro:transitions';
 
 <div class="projects-carousel-section" id="projects">
   <div class="max-w-[1350px] mx-auto px-4 mt-20">
-    <h2 class="font-bold leading-tight text-[clamp(2rem,4vw,4rem)] pointer-events-none interactive-text sm:pl-[8%] sm:text-left text-center mb-0">
+    <h2 class="font-bold leading-tight text-[clamp(2rem,4vw,4rem)] pointer-events-none interactive-text sm:pl-[8%] text-left mb-0">
       MY PROJECTS
     </h2>
-
-    <div class="absolute flex flex-col items-center text-white pl-[750px] -translate-y-2 sm:-translate-y-3 md:-translate-y-8">
+    <div id="carousel-instructions" class="hidden xl:flex absolute flex-col items-center text-white pl-[750px] -translate-y-2 sm:-translate-y-3 md:-translate-y-8 transition-opacity duration-500">
       <svg xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40" class="ml-4">
         <defs>
           <clipPath id="viewport">
@@ -119,25 +128,94 @@ import { ClientRouter } from 'astro:transitions';
       </p>
     </div>
 
-    <p class="text-base text-zinc-300 max-w-xl font-medium z-30 sm:pl-[8%] text-left mb-10 mt-10">
+    <!-- Desktop Instructions - Grid View -->
+    <div id="grid-instructions" class="hidden xl:flex absolute flex-col items-center text-white pl-[750px] -translate-y-2 sm:-translate-y-3 md:-translate-y-8 transition-opacity duration-500 opacity-0">
+      <svg xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40" class="ml-4">
+        <defs>
+          <linearGradient id="gridGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0.6"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Grid of cards with click animation -->
+        <g id="gridCards">
+          <rect x="10" y="8" width="18" height="12" rx="2" ry="2" fill="url(#gridGlow)" opacity="0.7">
+            <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite" begin="0s"/>
+          </rect>
+          <rect x="32" y="8" width="18" height="12" rx="2" ry="2" fill="url(#gridGlow)" opacity="0.7">
+            <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite" begin="0.7s"/>
+          </rect>
+          <rect x="54" y="8" width="18" height="12" rx="2" ry="2" fill="url(#gridGlow)" opacity="0.7">
+            <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite" begin="1.4s"/>
+          </rect>
+          <rect x="10" y="24" width="18" height="12" rx="2" ry="2" fill="url(#gridGlow)" opacity="0.7">
+            <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite" begin="0.3s"/>
+          </rect>
+          <rect x="32" y="24" width="18" height="12" rx="2" ry="2" fill="url(#gridGlow)" opacity="0.7">
+            <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite" begin="1s"/>
+          </rect>
+          <rect x="54" y="24" width="18" height="12" rx="2" ry="2" fill="url(#gridGlow)" opacity="0.7">
+            <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite" begin="1.7s"/>
+          </rect>
+        </g>
+      </svg>
+
+      <p class="text-lg font-handrawn tracking-widest pt-3">Click any project card to explore details</p>
+    </div>
+
+    <p class="text-base text-zinc-300 max-w-xl font-medium z-30 sm:pl-[8%] text-left mb-6 mt-10">
       Explore a range of my projects that blend full stack development with creative design, offering a mix of <b>coding and visual</b> innovation.
     </p>
+    <div class="flex gap-2 sm:pl-[8%] mb-8">
+      <button
+        id="carousel-view-btn"
+        class="view-toggle-btn active px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 bg-white/10 text-white border border-white/20 flex items-center"
+      >
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <rect x="4" y="6" width="5" height="7" rx="1" stroke-width="2"/>
+          <rect x="10" y="6" width="5" height="7" rx="1" stroke-width="2"/>
+          <rect x="16" y="6" width="5" height="7" rx="1" stroke-width="2"/>
+          <circle cx="12" cy="18" r="1" fill="currentColor"/>
+          <circle cx="8" cy="18" r="1" fill="currentColor" opacity="0.5"/>
+          <circle cx="16" cy="18" r="1" fill="currentColor" opacity="0.5"/>
+        </svg>
+        Carousel View
+      </button>
+      <button
+        id="grid-view-btn"
+        class="view-toggle-btn px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 bg-transparent text-gray-400 border border-gray-600 hover:border-white/20 hover:text-white flex items-center"
+      >
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+        </svg>
+        Grid View
+      </button>
+    </div>
 
-    <div class="relative">
-      <div class="glide mx-auto relative">
-        <div class="glide__track" data-glide-el="track" transition:name="project">
-          <ul class="glide__slides" id="slides">
-            {projects.map((project, idx) => (
-              <li class="glide__slide pb-40 pt-20" data-index={idx} key={idx}>
-                <ProjectCard {...project} />
-              </li>
+    <div class="views-wrapper relative min-h-[600px]">
+      <div id="carousel-container" class="view-container active">
+        <div class="glide mx-auto relative">
+          <div class="glide__track" data-glide-el="track" transition:name="project">
+            <ul class="glide__slides" id="slides">
+              {projects.map((project, idx) => (
+                <li class="glide__slide pb-20 sm:pb-32 xl:pb-40 pt-10 sm:pt-16 xl:pt-20" data-index={idx} key={idx}>
+                  <ProjectCard {...project} />
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="glide__bullets mt-6 flex justify-center" data-glide-el="controls[nav]">
+            {projects.map((_, i) => (
+              <button class="glide__bullet mx-1" data-glide-dir={`=${i}`} key={i}></button>
             ))}
-          </ul>
+          </div>
         </div>
-        <div class="glide__bullets mt-6 flex justify-center" data-glide-el="controls[nav]">
-          {projects.map((_, i) => (
-            <button class="glide__bullet mx-1" data-glide-dir={`=${i}`} key={i}></button>
-          ))}
+      </div>
+
+      <div id="grid-container" class="view-container">
+        <div class="pb-20 sm:pb-32 xl:pb-40 pt-10 sm:pt-16 xl:pt-20">
+          <ProjectsGrid />
         </div>
       </div>
     </div>
@@ -150,34 +228,85 @@ import { ClientRouter } from 'astro:transitions';
     transform: scale(1);
     transition: transform 0.4s ease-in-out, filter 0.4s ease-in-out;
     position: relative;
-    filter: blur(3px);
+    filter: blur(2px);
   }
+
   .glide__slide--active {
     pointer-events: auto;
-    transform: scale(1.3);
     filter: blur(0px);
   }
+
+  @media (max-width: 639px) {
+    .glide__slide--active {
+      transform: scale(1.05);
+    }
+  }
+
+  @media (min-width: 640px) and (max-width: 1079px) {
+    .glide__slide--active {
+      transform: scale(1.15);
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .glide__slide--active {
+      transform: scale(1.3);
+    }
+  }
+
   .glide__track {
     position: relative;
   }
-  .glide__track::before,
-  .glide__track::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 320px;
-    pointer-events: none;
-    z-index: 2;
+
+  @media (max-width: 639px) {
+    .glide__track::before,
+    .glide__track::after {
+      display: none;
+    }
   }
-  .glide__track::before {
-    left: 0;
-    background: linear-gradient(to right, rgba(0, 0, 0, 1), transparent);
+
+  @media (min-width: 640px) and (max-width: 1079px) {
+    .glide__track::before,
+    .glide__track::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 150px;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .glide__track::before {
+      left: 0;
+      background: linear-gradient(to right, rgba(0, 0, 0, 1), transparent);
+    }
+    .glide__track::after {
+      right: 0;
+      background: linear-gradient(to left, rgba(0, 0, 0, 1), transparent);
+    }
   }
-  .glide__track::after {
-    right: 0;
-    background: linear-gradient(to left, rgba(0, 0, 0, 1), transparent);
+
+  @media (min-width: 1080px) {
+    .glide__track::before,
+    .glide__track::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 320px;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .glide__track::before {
+      left: 0;
+      background: linear-gradient(to right, rgba(0, 0, 0, 1), transparent);
+    }
+    .glide__track::after {
+      right: 0;
+      background: linear-gradient(to left, rgba(0, 0, 0, 1), transparent);
+    }
   }
+
   @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.2; transform: scale(0.9)}
@@ -185,9 +314,154 @@ import { ClientRouter } from 'astro:transitions';
   .blink {
     animation: blink 0.5s ease;
   }
+  .view-toggle-btn.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .view-toggle-btn:not(.active) {
+    background: transparent;
+    color: rgb(156, 163, 175);
+    border-color: rgb(75, 85, 99);
+  }
+
+  .view-toggle-btn:not(.active):hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: white;
+  }
+
+  .views-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+  .view-container {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(30px);
+    transition: opacity 0.5s ease, transform 0.5s ease, visibility 0s linear 0.5s;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1;
+  }
+
+  .view-container.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease, visibility 0s linear 0s;
+    position: relative;
+    z-index: 10;
+  }
+
+  .grid-view-active #carousel-instructions {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .carousel-view-active #carousel-instructions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .grid-view-active #grid-instructions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .carousel-view-active #grid-instructions {
+    opacity: 0;
+    pointer-events: none;
+  }
 </style>
 
 <script>
+  function initializeViewToggle() {
+    const carouselBtn = document.getElementById('carousel-view-btn');
+    const gridBtn = document.getElementById('grid-view-btn');
+    const carouselContainer = document.getElementById('carousel-container');
+    const gridContainer = document.getElementById('grid-container');
+    const projectsSection = document.querySelector('.projects-carousel-section');
+
+    if (!carouselBtn || !gridBtn || !carouselContainer || !gridContainer) return;
+
+    const savedView = localStorage.getItem('projectsView') || 'carousel';
+
+    function switchToCarousel() {
+      carouselBtn.classList.add('active');
+      gridBtn.classList.remove('active');
+
+      gridContainer.classList.remove('active');
+      setTimeout(() => {
+        carouselContainer.classList.add('active');
+      }, 100);
+
+      if (projectsSection) {
+        projectsSection.classList.remove('grid-view-active');
+        projectsSection.classList.add('carousel-view-active');
+      }
+
+      localStorage.setItem('projectsView', 'carousel');
+
+      setTimeout(() => {
+        if (window.glideInstance) {
+          window.glideInstance.update();
+        }
+      }, 600);
+    }
+
+    function switchToGrid() {
+      gridBtn.classList.add('active');
+      carouselBtn.classList.remove('active');
+
+      carouselContainer.classList.remove('active');
+      setTimeout(() => {
+        gridContainer.classList.add('active');
+      }, 100);
+
+      if (projectsSection) {
+        projectsSection.classList.remove('carousel-view-active');
+        projectsSection.classList.add('grid-view-active');
+      }
+
+      localStorage.setItem('projectsView', 'grid');
+
+      setTimeout(() => {
+        const gridElement = document.getElementById('projects-grid');
+        if (gridElement) {
+          gridElement.classList.add('active');
+        }
+      }, 200);
+    }
+
+    if (savedView === 'grid') {
+      gridBtn.classList.add('active');
+      carouselBtn.classList.remove('active');
+      carouselContainer.classList.remove('active');
+      gridContainer.classList.add('active');
+      if (projectsSection) {
+        projectsSection.classList.add('grid-view-active');
+      }
+
+      setTimeout(() => {
+        const gridElement = document.getElementById('projects-grid');
+        if (gridElement) {
+          gridElement.classList.add('active');
+        }
+      }, 100);
+    } else {
+      if (projectsSection) {
+        projectsSection.classList.add('carousel-view-active');
+      }
+    }
+
+    carouselBtn.addEventListener('click', switchToCarousel);
+    gridBtn.addEventListener('click', switchToGrid);
+  }
+
   document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowLeft') {
       const kbd = document.getElementById('arrow-left');
@@ -203,4 +477,7 @@ import { ClientRouter } from 'astro:transitions';
       }
     }
   });
+
+  document.addEventListener('astro:page-load', initializeViewToggle);
+  document.addEventListener('DOMContentLoaded', initializeViewToggle);
 </script>

@@ -24,7 +24,7 @@ const btnBg = Astro.props.btnBg || "bg-purple-500/70";
   >
     <div
       id={"diagram-modal-content-" + uid}
-      class="relative max-w-6xl w-full mx-4 h-[90vh] bg-white/5 backdrop-blur-lg rounded-2xl shadow-2xl overflow-hidden scale-95 transform transition-all duration-300"
+      class="relative max-w-6xl w-full mx-4 h-[90vh] bg-black/40 backdrop-blur-lg rounded-2xl shadow-2xl overflow-hidden scale-95 transform transition-all duration-300"
     >
       <button
         onclick={
@@ -32,18 +32,44 @@ const btnBg = Astro.props.btnBg || "bg-purple-500/70";
           "document.getElementById('diagram-modal-content-" + uid + "').classList.add('scale-95');" +
           "document.body.classList.remove('overflow-hidden')"
         }
-        class="absolute top-4 right-4 p-2 bg-white/20 rounded-lg hover:bg-white/30 transition-colors"
+        class="absolute top-4 right-4 p-3 xl:p-2 bg-white/20 rounded-lg hover:bg-white/30 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation z-[60]"
+        aria-label="Close modal"
       >
-        <svg class="w-10 h-10 text-white" viewBox="0 0 24 24">
+        <svg class="w-8 h-8 xl:w-10 xl:h-10 text-white" viewBox="0 0 24 24">
           <path fill="currentColor" d="M19,6.41L17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" />
         </svg>
       </button>
 
       <div class="flex items-start justify-center h-full overflow-auto">
-        <div class="relative">
+        <div class="relative px-4">
           <slot name="modal" />
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script define:vars={{ uid }} is:inline>
+  document.addEventListener('astro:page-load', function() {
+    const modal = document.getElementById(`diagram-modal-${uid}`);
+    const modalContent = document.getElementById(`diagram-modal-content-${uid}`);
+
+    if (modal) {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          modal.classList.add('opacity-0', 'pointer-events-none');
+          modalContent.classList.add('scale-95');
+          document.body.classList.remove('overflow-hidden');
+        }
+      });
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modal && !modal.classList.contains('pointer-events-none')) {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modalContent.classList.add('scale-95');
+        document.body.classList.remove('overflow-hidden');
+      }
+    });
+  });
+</script>

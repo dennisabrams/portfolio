@@ -27,7 +27,7 @@ body::-webkit-scrollbar {
   position: absolute;
   left: 0;
   right: 0;
-  height: 800px;
+  height: 500px;
   pointer-events: none;
   z-index: 10;
   transform: translateZ(0);
@@ -36,10 +36,24 @@ body::-webkit-scrollbar {
   backface-visibility: hidden;
 }
 
-@media (max-width: 639px) {
+@media (min-width: 480px) {
   .column-with-opacity::before,
   .column-with-opacity::after {
     height: 600px;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1079px) {
+  .column-with-opacity::before,
+  .column-with-opacity::after {
+    height: 700px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .column-with-opacity::before,
+  .column-with-opacity::after {
+    height: 800px;
   }
 }
 
@@ -62,6 +76,18 @@ body::-webkit-scrollbar {
   pointer-events: none;
   overflow: hidden;
   z-index: 0;
+}
+
+@media (max-width: 639px) {
+  .particle-container {
+    display: none;
+  }
+}
+
+@media (min-width: 640px) {
+  .particle-container {
+    display: block;
+  }
 }
 
 .particle {
@@ -88,7 +114,8 @@ body::-webkit-scrollbar {
 #contact-button {
   position: relative;
   z-index: 10;
-  transition: border-bottom-left-radius 1.25s ease, border-bottom-right-radius 1.25s ease;
+  transition: border-bottom-left-radius 1.25s ease,
+    border-bottom-right-radius 1.25s ease;
 }
 
 .button-container {
@@ -110,11 +137,12 @@ body::-webkit-scrollbar {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: transform 1.25s ease, opacity 1.25s ease, visibility 0s linear 1.25s;
+  transition: transform 1.25s ease, opacity 1.25s ease,
+    visibility 0s linear 1.25s;
   background: #ffffff;
   padding: 8px 12px;
   margin: 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   cursor: pointer;
   white-space: nowrap;
   z-index: 2;
@@ -132,7 +160,7 @@ body::-webkit-scrollbar {
 }
 
 #email-popup:hover {
-  background: #E1D9D1;
+  background: #e1d9d1;
 }
 
 .interactive-letter {
@@ -144,10 +172,15 @@ body::-webkit-scrollbar {
 }
 
 .interactive-letter.active {
-  text-shadow:
-    0 0 4px rgba(255, 255, 255, var(--intensity)),
+  text-shadow: 0 0 4px rgba(255, 255, 255, var(--intensity)),
     0 0 6px rgba(255, 255, 255, var(--intensity)),
     0 0 12px rgba(255, 255, 255, var(--intensity));
+}
+
+@media (max-width: 639px) {
+  .interactive-letter.active {
+    text-shadow: none;
+  }
 }
 
 html {

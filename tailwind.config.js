@@ -2,11 +2,19 @@
 export default {
   content: ["./src/**/*.{astro,html,js,jsx,mdx}"],
   theme: {
+    screens: {
+      xs: "480px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1300px",
+      "2xl": "1536px",
+    },
     extend: {
-		fontFamily: {
-           handrawn: ['Delicious Handrawn', 'serif'],
-		   open: ['Open Sans', 'serif'],
-         },
+      fontFamily: {
+        handrawn: ["Delicious Handrawn", "serif"],
+        open: ["Open Sans", "serif"],
+      },
       keyframes: {
         loopUp: {
           "0%": { transform: "translateY(0)" },
