@@ -2,6 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import ProjectDetails from '../../components/projects/ProjectDetails.astro';
 import { projects } from '../../data/projectsData.js';
+import { categoryIcons } from '../../data/categoryIcons.js';
+import { categoryStyles } from '../../data/categoryStyles.js';
 import { Image } from 'astro:assets';
 import Console from '../../components/Console.astro';
 
@@ -266,6 +268,42 @@ function getSourceCodeIconPath(isOpenSource) {
       </div>
       <div class="relative mb-12 mt-6">
         <div class="h-[2px] bg-gradient-to-r from-transparent via-white/25 to-white/60"></div>
+
+        <div class="absolute top-[2px] right-0 flex gap-3 justify-end pr-4 xl:pr-8">
+          {project.category.reverse().map((cat, index) => {
+            const iconSrc = categoryIcons[cat];
+            const bgColorClass = categoryStyles[cat];
+            const bannerHeight = 50 + (cat.length * 8);
+            const hoverHeight = bannerHeight + 7;
+
+            return (
+              <div class="relative group">
+
+                <div
+                  class={`relative w-8 text-white font-bold text-xs shadow-lg transition-all duration-300 ${bgColorClass} rounded-b-lg group-hover:shadow-xl`}
+                  style={`height: ${bannerHeight}px;`}
+                  onmouseenter={`this.style.height = '${hoverHeight}px'`}
+                  onmouseleave={`this.style.height = '${bannerHeight}px'`}
+                >
+                  <div class="relative flex flex-col items-center h-full pt-1 pb-2 z-10">
+                    <div class="flex-1 flex items-center justify-center">
+                      <span class="transform rotate-90 whitespace-nowrap text-xs font-bold tracking-wide origin-center">
+                        {cat.toUpperCase()}
+                      </span>
+                    </div>
+                    <img
+                      src={iconSrc}
+                      alt={`${cat} icon`}
+                      class="w-4 h-4 flex-shrink-0 transform rotate-90"
+                    />
+                  </div>
+
+
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
       <div>
         <ProjectDetails project={project} />
