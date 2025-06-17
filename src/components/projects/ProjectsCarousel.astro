@@ -64,7 +64,7 @@ import { ClientRouter } from 'astro:transitions';
 
 <div class="projects-carousel-section" id="projects">
   <div class="max-w-[1350px] mx-auto px-4 mt-20">
-    <h2 class="font-bold leading-tight text-[clamp(2rem,4vw,4rem)] pointer-events-none interactive-text sm:pl-[8%] text-left mb-0">
+    <h2 class="font-extrabold sm:font-bold leading-tight text-[clamp(1.5rem,8vw,2.5rem)] sm:text-[clamp(2.5rem,8vw,4rem)] xl:text-[clamp(2.5rem,6vw,4.5rem)] text-white pointer-events-none interactive-text sm:pl-[8%] text-left mb-0">
       MY PROJECTS
     </h2>
     <div id="carousel-instructions" class="hidden xl:flex absolute flex-col items-center text-white pl-[750px] -translate-y-2 sm:-translate-y-3 md:-translate-y-8 transition-opacity duration-500">
@@ -164,7 +164,7 @@ import { ClientRouter } from 'astro:transitions';
       <p class="text-lg font-handrawn tracking-widest pt-3">Click any project card to explore details</p>
     </div>
 
-    <p class="text-base text-zinc-300 max-w-xl font-medium z-30 sm:pl-[8%] text-left mb-6 mt-10">
+    <p class="text-sm sm:text-base leading-relaxed text-zinc-300 font-medium max-w-xl z-30 sm:pl-[8%] text-left mb-8 mt-10">
       Explore a range of my projects that blend full stack development with creative design, offering a mix of <b>coding and visual</b> innovation.
     </p>
     <div class="flex gap-2 sm:pl-[8%] mb-8">
@@ -193,7 +193,7 @@ import { ClientRouter } from 'astro:transitions';
       </button>
     </div>
 
-    <div class="views-wrapper relative min-h-[600px]">
+    <div class="views-wrapper relative min-h-[400px] sm:min-h-[600px]">
       <div id="carousel-container" class="view-container active">
         <div class="glide mx-auto relative">
           <div class="glide__track" data-glide-el="track" transition:name="project">
@@ -214,7 +214,7 @@ import { ClientRouter } from 'astro:transitions';
       </div>
 
       <div id="grid-container" class="view-container">
-        <div class="pb-20 sm:pb-32 xl:pb-40 pt-10 sm:pt-16 xl:pt-20">
+        <div class="pb-20 sm:pb-32 xl:pb-24 pt-10 sm:pt-16 xl:pt-20">
           <ProjectsGrid />
         </div>
       </div>
