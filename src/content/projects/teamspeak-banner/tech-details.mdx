@@ -1,0 +1,105 @@
+---
+title: "Technologies"
+icon: "/icons/tech.svg"
+---
+
+import { Image } from "astro:assets";
+import teamSpeakIcon from "public/icons/teamspeak.svg";
+
+
+<div class="flex flex-col xl:flex-row xl:items-start max-w-prose my-4 p-4">
+  <div class="flex flex-row items-start gap-1 xl:gap-4 mb-4 xl:mb-0 xl:flex-shrink-0">
+    <Image src={teamSpeakIcon} alt="TeamSpeak" width={70} class="" />
+  </div>
+   <p class="flex flex-col xl:pl-6 mt-0 xl:mt-0">
+  The system connects to the TeamSpeak server using the official <a class="text-blue-500 hover:text-blue-600 hover:underline decoration-2 duration-500 font-bold" target="_blank" rel="noopener noreferrer" href="https://github.com/planetteamspeak/ts3phpframework">TeamSpeak 3 PHP Framework</a> to pull live client and server data, which is then rendered directly into a PNG image.
+  </p>
+</div>
+
+<div class="w-full overflow-x-auto mt-8 mb-20">
+  <div class="rounded-lg">
+    <table class="w-full divide-y divide-gray-600">
+      <thead class="bg-black/30 hover:bg-black hover:bg-opacity-80">
+        <tr>
+          <th class="px-4 py-3 text-left text-lg text-white tracking-wider">
+            Technology / Technique
+          </th>
+          <th class="px-4 py-3 text-left text-lg text-white tracking-wider">
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-600">
+        <tr class="transition-colors hover:bg-black hover:bg-opacity-80">
+          <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">
+            PHP 7.4.3
+          </td>
+          <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+            The main scripting language used to dynamically generate the image file in real time.
+          </td>
+        </tr>
+        <tr class="transition-colors bg-black/30 hover:bg-black hover:bg-opacity-80">
+          <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">
+            TeamSpeak 3 PHP Framework
+          </td>
+          <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+            Connects to the TeamSpeak server via ServerQuery<sup class="text-blue-500 font-black">1</sup> to fetch live client and server data.
+          </td>
+        </tr>
+        <tr class="transition-colors hover:bg-black hover:bg-opacity-80">
+          <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">
+            GD Library (PHP)
+          </td>
+          <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+            Used to render the PNG image<sup class="text-blue-500 font-black">2</sup> including fonts, icons, and text effects like rotation and shadows.
+          </td>
+        </tr>
+        <tr class="transition-colors bg-black/30 hover:bg-black hover:bg-opacity-80">
+          <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">
+            External Config File
+          </td>
+          <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+            Controls layout, text, font settings, localization, and display options without modifying core code.
+          </td>
+        </tr>
+        <tr class="transition-colors hover:bg-black hover:bg-opacity-80">
+          <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">
+            Apache / nginx
+          </td>
+          <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+            Any standard web server is capable of serving the real-time banner image via a public URL.
+          </td>
+        </tr>
+        <tr class="transition-colors bg-black/30 hover:bg-black hover:bg-opacity-80">
+          <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">
+            Locale Support
+          </td>
+          <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+            Date and time formatting adjusts dynamically based on server-side locale settings.
+          </td>
+        </tr>
+        <tr class="transition-colors hover:bg-black hover:bg-opacity-80">
+          <td class="px-4 py-3 text-gray-300 font-extrabold bg-opacity-50">
+            RFC 3986 Encoding
+          </td>
+          <td class="px-4 py-3 text-gray-400 bg-opacity-50">
+            Automatically encodes ServerQuery credentials to handle special characters<sup class="text-blue-500 font-black">3</sup> securely.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="relative mt-8 text-xs pl-4">
+    <span class="absolute left-0 top-0 text-blue-500 font-black">1</span>
+    ServerQuery access must be enabled and configured on the TeamSpeak server for the PHP Framework to function properly. The connection uses a username/password combo to authenticate each request.
+  </h3>
+  <h3 class="relative mt-2 text-xs pl-4">
+    <span class="absolute left-0 top-0 text-blue-500 font-black">2</span>
+    <a class="text-blue-500 hover:text-blue-600 hover:underline decoration-2 duration-500 font-bold" target="_blank" rel="noopener noreferrer" href="https://www.php.net/manual/en/intro.image.php">GD Library</a> allows text to be drawn at any angle or size, using TrueType fonts (.ttf). It also supports transparency for rendering cleaner overlays or logo placement.
+  </h3>
+  <h3 class="relative mt-2 text-xs pl-4">
+    <span class="absolute left-0 top-0 text-blue-500 font-black">3</span>
+    Encoding the ServerQuery credentials ensures compatibility with special characters like `@`, `&`, or spaces that could otherwise break URL queries or connection strings. This improvement came from a <a class="text-blue-500 hover:text-blue-600 hover:underline decoration-2 duration-500 font-bold" target="_blank" rel="noopener noreferrer" href="https://github.com/dennisabrams/teamspeak-banner/issues/1">GitHub issue</a> where a user had login problems due to special characters in their ServerQuery password.
+  </h3>
+</div>

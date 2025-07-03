@@ -1,0 +1,26 @@
+---
+title: "Introduction"
+icon: "/icons/pen.svg"
+---
+
+import { Image } from "astro:assets";
+import bannerDisplay from "/src/assets/projects/teamspeak-banner/banner.gif";
+
+<div class="flex flex-col gap-4 md:gap-10 mt-8 mb-20 xl:mx-4">
+  <div class="text-left max-w-prose">
+    <h2 class="text-xl text-white font-bold">
+      Live-Generated Info Display for TeamSpeak Servers
+    </h2>
+    <p class="text-gray-400 mb-4">
+      TeamSpeak Banner is a PHP-based tool designed to generate a real-time
+      banner image for <a class="text-blue-500 hover:text-blue-600 hover:underline decoration-2 duration-500 font-bold" target="_blank" rel="noopener noreferrer" href="https://www.teamspeak.com/">TeamSpeak</a> servers, combining live client data and server
+      statistics in a clean, customizable display.
+    </p>
+  </div>
+  <Image src={bannerDisplay} alt="Banner" class="rounded-lg drop-shadow-[0_20px_8px_rgba(0,0,0,0.5)] transition-transform transform hover:scale-105 ease-in-out duration-300"/>
+  <div class="text-left max-w-prose">
+    <p class="text-gray-400 mb-4">
+      It connects to the server backend and uses a <a class="text-blue-500 hover:text-blue-600 hover:underline decoration-2 duration-500 font-bold" target="_blank" rel="noopener noreferrer" href="https://github.com/dennisabrams/teamspeak-banner/blob/main/config.php">configuration file</a> for full control over what appears on the banner.
+    </p>
+  </div>
+</div>

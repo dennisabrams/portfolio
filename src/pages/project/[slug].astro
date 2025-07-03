@@ -270,7 +270,7 @@ function getSourceCodeIconPath(isOpenSource) {
         <div class="h-[2px] bg-gradient-to-r from-transparent via-white/25 to-white/60"></div>
 
         <div class="absolute top-[2px] right-0 flex gap-3 justify-end pr-4 xl:pr-8">
-          {project.category.reverse().map((cat, index) => {
+          {[...project.category].map((cat, index) => {
             const iconSrc = categoryIcons[cat];
             const bgColorClass = categoryStyles[cat];
             const bannerHeight = 50 + (cat.length * 8);

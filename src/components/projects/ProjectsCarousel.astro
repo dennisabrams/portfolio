@@ -11,55 +11,91 @@ import { ClientRouter } from 'astro:transitions';
 <script type="module">
   import Glide from 'https://cdn.jsdelivr.net/npm/@glidejs/glide@3.7.1/dist/glide.esm.min.js';
 
-  function initializeGlide() {
+  let glideInstance = null;
+
+  function cleanupGlide() {
+    if (glideInstance) {
+      try {
+        glideInstance.destroy();
+      } catch (e) {
+        console.warn('Error destroying Glide instance:', e);
+      }
+      glideInstance = null;
+    }
+
     const rootElement = document.querySelector('.glide');
-    if (!rootElement || rootElement.dataset.glideInitialized) return;
+    if (rootElement) {
+      delete rootElement.dataset.glideInitialized;
+    }
+
+    if (window.glideInstance) {
+      window.glideInstance = null;
+    }
+  }
+
+  function initializeGlide() {
+    cleanupGlide();
+
+    const rootElement = document.querySelector('.glide');
+    if (!rootElement) return;
 
     const savedSlideIndex = parseInt(localStorage.getItem('activeSlide'), 10) || 0;
-    const glide = new Glide(rootElement, {
-      type: 'carousel',
-      perView: 1,
-      gap: 0,
-      focusAt: 'center',
-      peek: 325,
-      dragThreshold: 80,
-      startAt: savedSlideIndex,
-      breakpoints: {
-        640: {
-          peek: 0,
-          gap: 0,
-          dragThreshold: 60
-        },
-        1250: {
-          peek: 50,
-          gap: 0,
-          dragThreshold: 70
+
+    try {
+      glideInstance = new Glide(rootElement, {
+        type: 'carousel',
+        perView: 1,
+        gap: 0,
+        focusAt: 'center',
+        peek: 325,
+        dragThreshold: 80,
+        startAt: savedSlideIndex,
+        breakpoints: {
+          640: {
+            peek: 0,
+            gap: 0,
+            dragThreshold: 60
+          },
+          1250: {
+            peek: 50,
+            gap: 0,
+            dragThreshold: 70
+          }
         }
-      }
-    });
-
-    glide.on('run.after', () => {
-      const slides = document.querySelectorAll('.glide__slide');
-      slides.forEach((slide, index) => {
-        slide.classList.toggle('astro-transition-active', index === glide.index);
       });
-      localStorage.setItem('activeSlide', glide.index);
-    });
 
-    glide.mount();
-    rootElement.dataset.glideInitialized = 'true';
-    window.glideInstance = glide;
+      glideInstance.on('run.after', () => {
+        const slides = document.querySelectorAll('.glide__slide');
+        slides.forEach((slide, index) => {
+          slide.classList.toggle('astro-transition-active', index === glideInstance.index);
+        });
+        localStorage.setItem('activeSlide', glideInstance.index);
+      });
+
+      glideInstance.mount();
+      rootElement.dataset.glideInitialized = 'true';
+      window.glideInstance = glideInstance;
+    } catch (e) {
+      console.error('Error initializing Glide:', e);
+    }
   }
 
-  if (!window.hasPageLoadListener) {
-    document.addEventListener('astro:page-load', () => {
-      setTimeout(initializeGlide, 100);
-    });
-    window.hasPageLoadListener = true;
+  function handlePageLoad() {
+    setTimeout(initializeGlide, 100);
   }
 
-  document.addEventListener('DOMContentLoaded', initializeGlide);
-  document.addEventListener('astro:page-load', initializeGlide);
+  function handleBeforeSwap() {
+    cleanupGlide();
+  }
+
+  document.addEventListener('astro:page-load', handlePageLoad);
+  document.addEventListener('astro:before-swap', handleBeforeSwap);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', handlePageLoad);
+  } else {
+    handlePageLoad();
+  }
 </script>
 
 <div class="projects-carousel-section" id="projects">
@@ -128,7 +164,6 @@ import { ClientRouter } from 'astro:transitions';
       </p>
     </div>
 
-    <!-- Desktop Instructions - Grid View -->
     <div id="grid-instructions" class="hidden xl:flex absolute flex-col items-center text-white pl-[750px] -translate-y-2 sm:-translate-y-3 md:-translate-y-8 transition-opacity duration-500 opacity-0">
       <svg xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40" class="ml-4">
         <defs>
@@ -138,7 +173,6 @@ import { ClientRouter } from 'astro:transitions';
           </linearGradient>
         </defs>
 
-        <!-- Grid of cards with click animation -->
         <g id="gridCards">
           <rect x="10" y="8" width="18" height="12" rx="2" ry="2" fill="url(#gridGlow)" opacity="0.7">
             <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite" begin="0s"/>
@@ -379,7 +413,34 @@ import { ClientRouter } from 'astro:transitions';
 </style>
 
 <script>
+  let viewToggleInitialized = false;
+  let keydownListener = null;
+
+  function cleanupViewToggle() {
+    const carouselBtn = document.getElementById('carousel-view-btn');
+    const gridBtn = document.getElementById('grid-view-btn');
+
+    if (carouselBtn && carouselBtn._clickHandler) {
+      carouselBtn.removeEventListener('click', carouselBtn._clickHandler);
+      delete carouselBtn._clickHandler;
+    }
+
+    if (gridBtn && gridBtn._clickHandler) {
+      gridBtn.removeEventListener('click', gridBtn._clickHandler);
+      delete gridBtn._clickHandler;
+    }
+
+    if (keydownListener) {
+      document.removeEventListener('keydown', keydownListener);
+      keydownListener = null;
+    }
+
+    viewToggleInitialized = false;
+  }
+
   function initializeViewToggle() {
+    if (viewToggleInitialized) return;
+
     const carouselBtn = document.getElementById('carousel-view-btn');
     const gridBtn = document.getElementById('grid-view-btn');
     const carouselContainer = document.getElementById('carousel-container');
@@ -408,7 +469,11 @@ import { ClientRouter } from 'astro:transitions';
 
       setTimeout(() => {
         if (window.glideInstance) {
-          window.glideInstance.update();
+          try {
+            window.glideInstance.update();
+          } catch (e) {
+            console.warn('Error updating Glide instance:', e);
+          }
         }
       }, 600);
     }
@@ -458,26 +523,46 @@ import { ClientRouter } from 'astro:transitions';
       }
     }
 
+    carouselBtn._clickHandler = switchToCarousel;
+    gridBtn._clickHandler = switchToGrid;
+
     carouselBtn.addEventListener('click', switchToCarousel);
     gridBtn.addEventListener('click', switchToGrid);
+
+    keydownListener = (event) => {
+      if (event.key === 'ArrowLeft') {
+        const kbd = document.getElementById('arrow-left');
+        if (kbd) {
+          kbd.classList.add('blink');
+          setTimeout(() => kbd.classList.remove('blink'), 500);
+        }
+      } else if (event.key === 'ArrowRight') {
+        const kbd = document.getElementById('arrow-right');
+        if (kbd) {
+          kbd.classList.add('blink');
+          setTimeout(() => kbd.classList.remove('blink'), 500);
+        }
+      }
+    };
+
+    document.addEventListener('keydown', keydownListener);
+    viewToggleInitialized = true;
   }
 
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowLeft') {
-      const kbd = document.getElementById('arrow-left');
-      if (kbd) {
-        kbd.classList.add('blink');
-        setTimeout(() => kbd.classList.remove('blink'), 500);
-      }
-    } else if (event.key === 'ArrowRight') {
-      const kbd = document.getElementById('arrow-right');
-      if (kbd) {
-        kbd.classList.add('blink');
-        setTimeout(() => kbd.classList.remove('blink'), 500);
-      }
-    }
-  });
+  function handleViewTogglePageLoad() {
+    setTimeout(initializeViewToggle, 150);
+  }
 
-  document.addEventListener('astro:page-load', initializeViewToggle);
-  document.addEventListener('DOMContentLoaded', initializeViewToggle);
+  function handleViewToggleBeforeSwap() {
+    cleanupViewToggle();
+  }
+
+  document.addEventListener('astro:page-load', handleViewTogglePageLoad);
+  document.addEventListener('astro:before-swap', handleViewToggleBeforeSwap);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', handleViewTogglePageLoad);
+  } else {
+    handleViewTogglePageLoad();
+  }
 </script>

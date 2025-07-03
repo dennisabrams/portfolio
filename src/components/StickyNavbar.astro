@@ -23,7 +23,7 @@
       <a href="/#summary" data-target="summary" class="nav-link hover:text-gray-300 transition-colors duration-1000 px-2 py-1 min-h-[44px] flex items-center">SUMMARY</a>
       <a href="/#projects" data-target="projects" class="nav-link hover:text-gray-300 transition-colors duration-1000 px-2 py-1 min-h-[44px] flex items-center">PROJECTS</a>
       <div class="relative group h-full flex items-center">
-        <div class="flex items-center h-full cursor-pointer hover:text-gray-300 space-x-2 px-2 py-1 min-h-[44px]">
+        <div id="language-selector" class="flex items-center h-full cursor-pointer hover:text-gray-300 space-x-2 px-2 py-1 min-h-[44px]">
           <span>LANGUAGE</span>
           <svg class="w-5 h-3 rounded overflow-hidden" style="filter: drop-shadow(0 0 1px rgba(255,255,255,0.2));" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55.2 38.4">
             <g fill-rule="evenodd" clip-rule="evenodd">
@@ -148,6 +148,54 @@
           logoBreadcrumb.appendChild(segSpan);
         });
       }
+    }
+
+    const languageSelector = document.getElementById("language-selector");
+    if (languageSelector) {
+      languageSelector.addEventListener("click", function(e) {
+        e.preventDefault();
+        showInProgressNotification();
+      });
+    }
+
+    function showInProgressNotification() {
+      const existingNotification = document.getElementById("in-progress-notification");
+      if (existingNotification) {
+        existingNotification.remove();
+      }
+
+      const notification = document.createElement("div");
+      notification.id = "in-progress-notification";
+      notification.className = "fixed top-24 right-4 bg-blue-500/90 backdrop-blur-sm text-white px-4 py-3 rounded-lg shadow-lg z-50 flex items-center space-x-2 transition-all duration-300 transform translate-x-full";
+
+      notification.innerHTML = `
+        <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+        </svg>
+        <span class="font-medium">Language support in progress...</span>
+        <button class="ml-2 hover:text-gray-200 transition-colors" onclick="this.parentElement.remove()">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      `;
+
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.classList.remove("translate-x-full");
+      }, 10);
+
+      setTimeout(() => {
+        if (notification.parentElement) {
+          notification.classList.add("translate-x-full");
+          setTimeout(() => {
+            if (notification.parentElement) {
+              notification.remove();
+            }
+          }, 300);
+        }
+      }, 4000);
     }
   });
 </script>

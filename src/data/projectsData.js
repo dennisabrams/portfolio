@@ -10,7 +10,7 @@ export const projects = [
   {
     name: "Project X.E.N.O.",
     type: "code",
-    category: ["Software", "Gaming"],
+    category: ["Gaming", "Software"],
     description:
       "A Lua-scripted tool featuring a dynamic entity that follows players and interacts with the environment, showcasing modular design and gameplay integration.",
     image: xenoImage,
@@ -65,16 +65,21 @@ export const projects = [
     openSource: "https://github.com/dennisabrams/teamspeak-banner",
     sections: [
       {
-        title: "Coming soon",
-        icon: "/icons/wrench.svg",
-        contentPath: "projects/teamspeak-banner/soon.mdx",
+        title: "Introduction",
+        icon: "/icons/pen.svg",
+        contentPath: "projects/teamspeak-banner/intro.mdx",
+      },
+      {
+        title: "Technologies",
+        icon: "/icons/tech.svg",
+        contentPath: "projects/teamspeak-banner/tech-details.mdx",
       },
     ],
   },
   {
     name: "Cocktailmaker MK6",
     type: "code",
-    category: ["Hardware", "Software", "Web"],
+    category: ["Web", "Hardware", "Software"],
     description:
       "A cocktail machine featuring pump control, weight precision, and a touchscreen interface with prebuilt and user-defined recipes, powered by PHP, C++, Python, and an SQL-backed system.",
     image: cocktailmakerImage,
@@ -96,7 +101,7 @@ export const projects = [
   {
     name: "RFID Station",
     type: "code",
-    category: ["Hardware", "Web"],
+    category: ["Web", "Hardware"],
     description:
       "A networked RFID self-service system displaying account balances and enabling payments via a PHP-driven web interface, with multiple connected units.",
     image: rfidImage,
@@ -118,7 +123,7 @@ export const projects = [
   {
     name: "SlotMachine BBS|ME",
     type: "code",
-    category: ["Hardware", "Software", "Gaming", "Web"],
+    category: ["Web", "Gaming","Hardware", "Software"],
     description:
       "A Python-powered slot machine with reactive lighting, physical controls, and a web-based login system for player stats, integrating PHP, C++, and database management.",
     image: slotImage,
