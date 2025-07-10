@@ -74,6 +74,11 @@ export const projects = [
         icon: "/icons/tech.svg",
         contentPath: "projects/teamspeak-banner/tech-details.mdx",
       },
+      {
+        title: "Development Process",
+        icon: "/icons/wrench.svg",
+        contentPath: "projects/teamspeak-banner/process.mdx",
+      },
     ],
   },
   {

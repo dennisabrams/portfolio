@@ -1,0 +1,106 @@
+---
+title: "Development Process"
+icon: "/icons/wrench.svg"
+---
+
+import serverIcon from "public/icons/server.svg?raw";
+import dataIcon from "public/icons/data.svg?raw";
+import imageIcon from "public/icons/image.svg?raw";
+import setupIcon from "public/icons/setup.svg?raw";
+
+<div class="space-y-12 mt-8 mb-20">
+  <div class="text-left mb-12">
+    <p class="text-gray-400 text-lg max-w-4xl">
+      The project was built to prioritize <strong class="text-gray-300">flexibility</strong> and <strong class="text-gray-300">user control</strong>. Rather than hardcoding values, every visual and informational element is configured externally, making it easy to deploy across different servers with unique branding or languages.
+    </p>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-8">
+    <div class="bg-transparent rounded-lg p-6 border border-gray-700/50">
+      <div class="flex items-center gap-4 mb-4" style="--theme-color: rgba(59,130,246,0.1);">
+        <div class="shrink-0 relative">
+          <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
+          <div class="relative">
+            <div class="w-8 h-8 text-blue-400" set:html={serverIcon}></div>
+          </div>
+        </div>
+        <h3 class="text-2xl text-gray-300 font-bold">Server Connection</h3>
+      </div>
+      <div class="space-y-3 text-gray-400">
+        <p>
+          <strong class="text-gray-300">ServerQuery Protocol:</strong> The script authenticates via the TeamSpeak ServerQuery protocol.
+        </p>
+        <p>
+          <strong class="text-gray-300">Virtual Server Object:</strong> Once connected, a virtual server object is spawned to access full client and server data.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-transparent rounded-lg p-6 border border-gray-700/50">
+      <div class="flex items-center gap-4 mb-4" style="--theme-color: rgba(34,197,94,0.1);">
+        <div class="shrink-0 relative">
+          <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
+          <div class="relative">
+            <div class="w-8 h-8 text-green-400" set:html={dataIcon}></div>
+          </div>
+        </div>
+        <h3 class="text-2xl text-gray-300 font-bold">Data Handling</h3>
+      </div>
+      <div class="space-y-3 text-gray-400">
+        <p>
+          <strong class="text-gray-300">Client Info:</strong> Upload & download (last minute), nickname, online time, country flag, total connections.
+        </p>
+        <p>
+          <strong class="text-gray-300">Server Info:</strong> Name, version, active/total clients, uptime, group icons, and date/time.
+        </p>
+        <p>
+          <strong class="text-gray-300">Dynamic Processing:</strong> All this information is retrieved and converted into visual output dynamically.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-transparent rounded-lg p-6 border border-gray-700/50">
+      <div class="flex items-center gap-4 mb-4" style="--theme-color: rgba(168,85,247,0.1);">
+        <div class="shrink-0 relative">
+          <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
+          <div class="relative">
+            <div class="w-8 h-8 text-purple-400" set:html={imageIcon}></div>
+          </div>
+        </div>
+        <h3 class="text-2xl text-gray-300 font-bold">Image Rendering</h3>
+      </div>
+      <div class="space-y-3 text-gray-400">
+        <p>
+          <strong class="text-gray-300">PHP GD Library:</strong> Using PHP's GD library, the banner is generated in real-time.
+        </p>
+        <p>
+          <strong class="text-gray-300">Advanced Features:</strong> Supports transparent PNGs, custom fonts, shadowed text, and layering.
+        </p>
+        <p>
+          <strong class="text-gray-300">Flexible Styling:</strong> Rotations, text positioning, and color blending are all supported per config values.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-transparent rounded-lg p-6 border border-gray-700/50">
+      <div class="flex items-center gap-4 mb-4" style="--theme-color: rgba(249,115,22,0.1);">
+        <div class="shrink-0 relative">
+          <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
+          <div class="relative">
+            <div class="w-8 h-8 text-orange-400" set:html={setupIcon}></div>
+          </div>
+        </div>
+        <h3 class="text-2xl text-gray-300 font-bold">Banner Setup</h3>
+      </div>
+      <div class="space-y-3 text-gray-400">
+        <p>
+          <strong class="text-gray-300">Server Integration:</strong> Once deployed, the banner can be integrated into any TeamSpeak 3 server via Virtual Server Settings.
+        </p>
+        <p>
+          <strong class="text-gray-300">Automatic Updates:</strong> TeamSpeak reloads the image every 60 seconds based on the Gfx Interval.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
