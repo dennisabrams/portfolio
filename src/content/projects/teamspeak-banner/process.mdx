@@ -16,91 +16,424 @@ import setupIcon from "public/icons/setup.svg?raw";
   </div>
 
   <div class="grid md:grid-cols-2 gap-8">
-    <div class="bg-transparent rounded-lg p-6 border border-gray-700/50">
-      <div class="flex items-center gap-4 mb-4" style="--theme-color: rgba(59,130,246,0.1);">
-        <div class="shrink-0 relative">
-          <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
-          <div class="relative">
-            <div class="w-8 h-8 text-blue-400" set:html={serverIcon}></div>
+    <div class="relative h-80 group" style="perspective: 1000px;"
+         onmouseenter="
+           const flipInner = this.children[0];
+           if (!this.classList.contains('flipped')) {
+             flipInner.style.transitionDuration = '300ms';
+             flipInner.style.transform = 'rotateY(10deg)';
+           } else {
+             flipInner.style.transitionDuration = '300ms';
+             flipInner.style.transform = 'rotateY(170deg)';
+           }
+         "
+         onmouseleave="
+           const flipInner = this.children[0];
+           if (!this.classList.contains('flipped')) {
+             flipInner.style.transitionDuration = '300ms';
+             flipInner.style.transform = 'rotateY(0deg)';
+           } else {
+             flipInner.style.transitionDuration = '300ms';
+             flipInner.style.transform = 'rotateY(180deg)';
+           }
+         ">
+      <div class="flip-inner relative w-full h-full transition-transform duration-700 transform-gpu" style="transform-style: preserve-3d;">
+
+        <div class="absolute inset-0 w-full h-full bg-transparent rounded-lg border border-gray-700/50" style="backface-visibility: hidden; transform: rotateY(0deg);">
+          <div class="pl-6 pr-20 py-6 h-full">
+            <div class="flex items-center gap-4 mb-4" style="--theme-color: rgba(59,130,246,0.1);">
+              <div class="shrink-0 relative">
+                <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
+                <div class="relative">
+                  <div class="w-8 h-8 text-blue-400" set:html={serverIcon}></div>
+                </div>
+              </div>
+              <h3 class="text-2xl text-gray-300 font-bold">Server Connection</h3>
+            </div>
+            <div class="space-y-3 text-gray-400">
+              <p>
+                <strong class="text-gray-300">ServerQuery Protocol:</strong> The script authenticates via the TeamSpeak ServerQuery protocol.
+              </p>
+              <p>
+                <strong class="text-gray-300">Virtual Server Object:</strong> Once connected, a virtual server object is spawned to access full client and server data.
+              </p>
+            </div>
+          </div>
+
+          <div onclick="
+            const container = this.closest('div[style*=perspective]');
+            const flipInner = container ? container.children[0] : null;
+            if (flipInner) {
+              flipInner.style.transform = 'rotateY(180deg)';
+              flipInner.style.transitionDuration = '700ms';
+              container.classList.add('flipped');
+            }
+          " class="flip-zone absolute top-0 right-0 w-16 h-full bg-gradient-to-l from-blue-500/15 to-transparent hover:from-blue-500/25 cursor-pointer transition-all duration-300 flex items-center justify-center group z-10 rounded-r-lg">
+            <div class="text-blue-400/60 group-hover:text-blue-400 transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </div>
           </div>
         </div>
-        <h3 class="text-2xl text-gray-300 font-bold">Server Connection</h3>
-      </div>
-      <div class="space-y-3 text-gray-400">
-        <p>
-          <strong class="text-gray-300">ServerQuery Protocol:</strong> The script authenticates via the TeamSpeak ServerQuery protocol.
-        </p>
-        <p>
-          <strong class="text-gray-300">Virtual Server Object:</strong> Once connected, a virtual server object is spawned to access full client and server data.
-        </p>
+
+        <div class="absolute inset-0 w-full h-full bg-transparent rounded-lg border border-gray-700/50" style="backface-visibility: hidden; transform: rotateY(180deg);">
+          <div class="pl-20 pr-6 py-6 h-full">
+            <div class="flex items-center gap-4 mb-4" style="--theme-color: rgba(59,130,246,0.1);">
+              <div class="shrink-0 relative">
+                <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
+                <div class="relative">
+                  <div class="w-8 h-8 text-blue-400" set:html={serverIcon}></div>
+                </div>
+              </div>
+              <h3 class="text-2xl text-gray-300 font-bold">Server Connection</h3>
+            </div>
+            <div class="space-y-2 text-gray-400">
+              <p class="text-sm">
+                <strong class="text-gray-300">Connection Method:</strong> Uses TeamSpeak3::factory() to establish connection.
+              </p>
+              <div class="text-xs font-mono text-blue-300 bg-gray-800/50 p-2 rounded">
+                TeamSpeak3::factory()
+              </div>
+              <p class="text-sm">
+                <strong class="text-gray-300">Security:</strong> URL-encodes credentials for authentication.
+              </p>
+            </div>
+          </div>
+
+          <div onclick="
+            const container = this.closest('div[style*=perspective]');
+            const flipInner = container ? container.children[0] : null;
+            if (flipInner) {
+              flipInner.style.transform = 'rotateY(0deg)';
+              flipInner.style.transitionDuration = '700ms';
+              container.classList.remove('flipped');
+            }
+          " class="flip-zone absolute top-0 left-0 w-16 h-full bg-gradient-to-r from-blue-500/15 to-transparent hover:from-blue-500/25 cursor-pointer transition-all duration-300 flex items-center justify-center group z-10 rounded-l-lg">
+            <div class="text-blue-400/60 group-hover:text-blue-400 transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="bg-transparent rounded-lg p-6 border border-gray-700/50">
-      <div class="flex items-center gap-4 mb-4" style="--theme-color: rgba(34,197,94,0.1);">
-        <div class="shrink-0 relative">
-          <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
-          <div class="relative">
-            <div class="w-8 h-8 text-green-400" set:html={dataIcon}></div>
+    <div class="relative h-80 group" style="perspective: 1000px;"
+         onmouseenter="
+           const flipInner = this.children[0];
+           if (!this.classList.contains('flipped')) {
+             flipInner.style.transitionDuration = '300ms';
+             flipInner.style.transform = 'rotateY(10deg)';
+           } else {
+             flipInner.style.transitionDuration = '300ms';
+             flipInner.style.transform = 'rotateY(170deg)';
+           }
+         "
+         onmouseleave="
+           const flipInner = this.children[0];
+           if (!this.classList.contains('flipped')) {
+             flipInner.style.transitionDuration = '300ms';
+             flipInner.style.transform = 'rotateY(0deg)';
+           } else {
+             flipInner.style.transitionDuration = '300ms';
+             flipInner.style.transform = 'rotateY(180deg)';
+           }
+         ">
+      <div class="flip-inner relative w-full h-full transition-transform duration-700 transform-gpu" style="transform-style: preserve-3d;">
+
+        <div class="absolute inset-0 w-full h-full bg-transparent rounded-lg border border-gray-700/50" style="backface-visibility: hidden; transform: rotateY(0deg);">
+          <div class="pl-6 pr-20 py-6 h-full">
+            <div class="flex items-center gap-4 mb-4" style="--theme-color: rgba(34,197,94,0.1);">
+              <div class="shrink-0 relative">
+                <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
+                <div class="relative">
+                  <div class="w-8 h-8 text-green-400" set:html={dataIcon}></div>
+                </div>
+              </div>
+              <h3 class="text-2xl text-gray-300 font-bold">Data Handling</h3>
+            </div>
+            <div class="space-y-3 text-gray-400">
+              <p>
+                <strong class="text-gray-300">Client Info:</strong> Upload & download (last minute), nickname, online time, country flag, total connections.
+              </p>
+              <p>
+                <strong class="text-gray-300">Server Info:</strong> Name, version, active/total clients, uptime, group icons, and date/time.
+              </p>
+            </div>
+          </div>
+
+          <div onclick="
+            const container = this.closest('div[style*=perspective]');
+            const flipInner = container ? container.children[0] : null;
+            if (flipInner) {
+              flipInner.style.transform = 'rotateY(180deg)';
+              flipInner.style.transitionDuration = '700ms';
+              container.classList.add('flipped');
+            }
+          " class="flip-zone absolute top-0 right-0 w-16 h-full bg-gradient-to-l from-green-500/15 to-transparent hover:from-green-500/25 cursor-pointer transition-all duration-300 flex items-center justify-center group z-10 rounded-r-lg">
+            <div class="text-green-400/60 group-hover:text-green-400 transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </div>
           </div>
         </div>
-        <h3 class="text-2xl text-gray-300 font-bold">Data Handling</h3>
-      </div>
-      <div class="space-y-3 text-gray-400">
-        <p>
-          <strong class="text-gray-300">Client Info:</strong> Upload & download (last minute), nickname, online time, country flag, total connections.
-        </p>
-        <p>
-          <strong class="text-gray-300">Server Info:</strong> Name, version, active/total clients, uptime, group icons, and date/time.
-        </p>
-        <p>
-          <strong class="text-gray-300">Dynamic Processing:</strong> All this information is retrieved and converted into visual output dynamically.
-        </p>
+
+        <div class="absolute inset-0 w-full h-full bg-transparent rounded-lg border border-gray-700/50" style="backface-visibility: hidden; transform: rotateY(180deg);">
+          <div class="pl-20 pr-6 py-6 h-full">
+            <div class="flex items-center gap-4 mb-4" style="--theme-color: rgba(34,197,94,0.1);">
+              <div class="shrink-0 relative">
+                <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
+                <div class="relative">
+                  <div class="w-8 h-8 text-green-400" set:html={dataIcon}></div>
+                </div>
+              </div>
+              <h3 class="text-2xl text-gray-300 font-bold">Data Handling</h3>
+            </div>
+            <div class="space-y-2 text-gray-400">
+              <p class="text-sm">
+                <strong class="text-gray-300">Server Statistics:</strong> Retrieves real-time data including server name, client count, and connection details.
+              </p>
+              <div class="text-xs font-mono text-green-300 bg-gray-800/50 p-2 rounded">
+                $ts3->virtualserver_name<br/>
+                $cl->getProperty('client_ip')
+              </div>
+              <p class="text-sm">
+                <strong class="text-gray-300">Client Detection:</strong> Compares visitor IP with connected clients to personalize banner content.
+              </p>
+            </div>
+          </div>
+
+          <div onclick="
+            const container = this.closest('div[style*=perspective]');
+            const flipInner = container ? container.children[0] : null;
+            if (flipInner) {
+              flipInner.style.transform = 'rotateY(0deg)';
+              flipInner.style.transitionDuration = '700ms';
+              container.classList.remove('flipped');
+            }
+          " class="flip-zone absolute top-0 left-0 w-16 h-full bg-gradient-to-r from-green-500/15 to-transparent hover:from-green-500/25 cursor-pointer transition-all duration-300 flex items-center justify-center group z-10 rounded-l-lg">
+            <div class="text-green-400/60 group-hover:text-green-400 transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="bg-transparent rounded-lg p-6 border border-gray-700/50">
-      <div class="flex items-center gap-4 mb-4" style="--theme-color: rgba(168,85,247,0.1);">
-        <div class="shrink-0 relative">
-          <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
-          <div class="relative">
-            <div class="w-8 h-8 text-purple-400" set:html={imageIcon}></div>
+    <div class="relative h-80 group" style="perspective: 1000px;"
+         onmouseenter="
+           const flipInner = this.children[0];
+           if (!this.classList.contains('flipped')) {
+             flipInner.style.transitionDuration = '300ms';
+             flipInner.style.transform = 'rotateY(10deg)';
+           } else {
+             flipInner.style.transitionDuration = '300ms';
+             flipInner.style.transform = 'rotateY(170deg)';
+           }
+         "
+         onmouseleave="
+           const flipInner = this.children[0];
+           if (!this.classList.contains('flipped')) {
+             flipInner.style.transitionDuration = '300ms';
+             flipInner.style.transform = 'rotateY(0deg)';
+           } else {
+             flipInner.style.transitionDuration = '300ms';
+             flipInner.style.transform = 'rotateY(180deg)';
+           }
+         ">
+      <div class="flip-inner relative w-full h-full transition-transform duration-700 transform-gpu" style="transform-style: preserve-3d;">
+
+        <div class="absolute inset-0 w-full h-full bg-transparent rounded-lg border border-gray-700/50" style="backface-visibility: hidden; transform: rotateY(0deg);">
+          <div class="pl-6 pr-20 py-6 h-full">
+            <div class="flex items-center gap-4 mb-4" style="--theme-color: rgba(168,85,247,0.1);">
+              <div class="shrink-0 relative">
+                <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
+                <div class="relative">
+                  <div class="w-8 h-8 text-purple-400" set:html={imageIcon}></div>
+                </div>
+              </div>
+              <h3 class="text-2xl text-gray-300 font-bold">Image Rendering</h3>
+            </div>
+            <div class="space-y-3 text-gray-400">
+              <p>
+                <strong class="text-gray-300">PHP GD Library:</strong> Using PHP's GD library, the banner is generated in real-time.
+              </p>
+              <p>
+                <strong class="text-gray-300">Advanced Features:</strong> Supports transparent PNGs, custom fonts, shadowed text, and layering.
+              </p>
+            </div>
+          </div>
+
+          <div onclick="
+            const container = this.closest('div[style*=perspective]');
+            const flipInner = container ? container.children[0] : null;
+            if (flipInner) {
+              flipInner.style.transform = 'rotateY(180deg)';
+              flipInner.style.transitionDuration = '700ms';
+              container.classList.add('flipped');
+            }
+          " class="flip-zone absolute top-0 right-0 w-16 h-full bg-gradient-to-l from-purple-500/15 to-transparent hover:from-purple-500/25 cursor-pointer transition-all duration-300 flex items-center justify-center group z-10 rounded-r-lg">
+            <div class="text-purple-400/60 group-hover:text-purple-400 transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </div>
           </div>
         </div>
-        <h3 class="text-2xl text-gray-300 font-bold">Image Rendering</h3>
-      </div>
-      <div class="space-y-3 text-gray-400">
-        <p>
-          <strong class="text-gray-300">PHP GD Library:</strong> Using PHP's GD library, the banner is generated in real-time.
-        </p>
-        <p>
-          <strong class="text-gray-300">Advanced Features:</strong> Supports transparent PNGs, custom fonts, shadowed text, and layering.
-        </p>
-        <p>
-          <strong class="text-gray-300">Flexible Styling:</strong> Rotations, text positioning, and color blending are all supported per config values.
-        </p>
+
+        <div class="absolute inset-0 w-full h-full bg-transparent rounded-lg border border-gray-700/50" style="backface-visibility: hidden; transform: rotateY(180deg);">
+          <div class="pl-20 pr-6 py-6 h-full">
+            <div class="flex items-center gap-4 mb-4" style="--theme-color: rgba(168,85,247,0.1);">
+              <div class="shrink-0 relative">
+                <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
+                <div class="relative">
+                  <div class="w-8 h-8 text-purple-400" set:html={imageIcon}></div>
+                </div>
+              </div>
+              <h3 class="text-2xl text-gray-300 font-bold">Image Rendering</h3>
+            </div>
+            <div class="space-y-2 text-gray-400">
+              <p class="text-sm">
+                <strong class="text-gray-300">GD Library Processing:</strong> Creates banner from background image with blur effects.
+              </p>
+              <div class="text-xs font-mono text-purple-300 bg-gray-800/50 p-2 rounded">
+                imagecreatefromstring()<br/>
+                drawtext() + imagecopy()
+              </div>
+              <p class="text-sm">
+                <strong class="text-gray-300">Dynamic Drawing:</strong> Renders text, shapes, and flags with real-time PNG output.
+              </p>
+            </div>
+          </div>
+
+          <div onclick="
+            const container = this.closest('div[style*=perspective]');
+            const flipInner = container ? container.children[0] : null;
+            if (flipInner) {
+              flipInner.style.transform = 'rotateY(0deg)';
+              flipInner.style.transitionDuration = '700ms';
+              container.classList.remove('flipped');
+            }
+          " class="flip-zone absolute top-0 left-0 w-16 h-full bg-gradient-to-r from-purple-500/15 to-transparent hover:from-purple-500/25 cursor-pointer transition-all duration-300 flex items-center justify-center group z-10 rounded-l-lg">
+            <div class="text-purple-400/60 group-hover:text-purple-400 transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="bg-transparent rounded-lg p-6 border border-gray-700/50">
-      <div class="flex items-center gap-4 mb-4" style="--theme-color: rgba(249,115,22,0.1);">
-        <div class="shrink-0 relative">
-          <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
-          <div class="relative">
-            <div class="w-8 h-8 text-orange-400" set:html={setupIcon}></div>
+    <div class="relative h-80 group" style="perspective: 1000px;"
+         onmouseenter="
+           const flipInner = this.children[0];
+           if (!this.classList.contains('flipped')) {
+             flipInner.style.transitionDuration = '300ms';
+             flipInner.style.transform = 'rotateY(10deg)';
+           } else {
+             flipInner.style.transitionDuration = '300ms';
+             flipInner.style.transform = 'rotateY(170deg)';
+           }
+         "
+         onmouseleave="
+           const flipInner = this.children[0];
+           if (!this.classList.contains('flipped')) {
+             flipInner.style.transitionDuration = '300ms';
+             flipInner.style.transform = 'rotateY(0deg)';
+           } else {
+             flipInner.style.transitionDuration = '300ms';
+             flipInner.style.transform = 'rotateY(180deg)';
+           }
+         ">
+      <div class="flip-inner relative w-full h-full transition-transform duration-700 transform-gpu" style="transform-style: preserve-3d;">
+
+        <div class="absolute inset-0 w-full h-full bg-transparent rounded-lg border border-gray-700/50" style="backface-visibility: hidden; transform: rotateY(0deg);">
+          <div class="pl-6 pr-20 py-6 h-full">
+            <div class="flex items-center gap-4 mb-4" style="--theme-color: rgba(249,115,22,0.1);">
+              <div class="shrink-0 relative">
+                <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
+                <div class="relative">
+                  <div class="w-8 h-8 text-orange-400" set:html={setupIcon}></div>
+                </div>
+              </div>
+              <h3 class="text-2xl text-gray-300 font-bold">Banner Setup</h3>
+            </div>
+            <div class="space-y-3 text-gray-400">
+              <p>
+                <strong class="text-gray-300">Server Integration:</strong> Once deployed, the banner can be integrated into any TeamSpeak 3 server via Virtual Server Settings.
+              </p>
+              <p>
+                <strong class="text-gray-300">Automatic Updates:</strong> TeamSpeak reloads the image every 60 seconds based on the Gfx Interval.
+              </p>
+            </div>
+          </div>
+
+          <div onclick="
+            const container = this.closest('div[style*=perspective]');
+            const flipInner = container ? container.children[0] : null;
+            if (flipInner) {
+              flipInner.style.transform = 'rotateY(180deg)';
+              flipInner.style.transitionDuration = '700ms';
+              container.classList.add('flipped');
+            }
+          " class="flip-zone absolute top-0 right-0 w-16 h-full bg-gradient-to-l from-orange-500/15 to-transparent hover:from-orange-500/25 cursor-pointer transition-all duration-300 flex items-center justify-center group z-10 rounded-r-lg">
+            <div class="text-orange-400/60 group-hover:text-orange-400 transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </div>
           </div>
         </div>
-        <h3 class="text-2xl text-gray-300 font-bold">Banner Setup</h3>
-      </div>
-      <div class="space-y-3 text-gray-400">
-        <p>
-          <strong class="text-gray-300">Server Integration:</strong> Once deployed, the banner can be integrated into any TeamSpeak 3 server via Virtual Server Settings.
-        </p>
-        <p>
-          <strong class="text-gray-300">Automatic Updates:</strong> TeamSpeak reloads the image every 60 seconds based on the Gfx Interval.
-        </p>
+
+        <div class="absolute inset-0 w-full h-full bg-transparent rounded-lg border border-gray-700/50" style="backface-visibility: hidden; transform: rotateY(180deg);">
+          <div class="pl-20 pr-6 py-6 h-full">
+            <div class="flex items-center gap-4 mb-4" style="--theme-color: rgba(249,115,22,0.1);">
+              <div class="shrink-0 relative">
+                <div class="absolute -inset-2 rounded-full animate-pulse" style="background-color: var(--theme-color);"></div>
+                <div class="relative">
+                  <div class="w-8 h-8 text-orange-400" set:html={setupIcon}></div>
+                </div>
+              </div>
+              <h3 class="text-2xl text-gray-300 font-bold">Banner Setup</h3>
+            </div>
+            <div class="space-y-2 text-gray-400">
+              <p class="text-sm">
+                <strong class="text-gray-300">Server Integration:</strong> Integrates seamlessly into TeamSpeak 3 server settings with 60-second refresh interval.
+              </p>
+              <div class="text-xs font-mono text-orange-300 bg-gray-800/50 p-2 rounded">
+                60 seconds
+              </div>
+              <p class="text-sm">
+                <strong class="text-gray-300">Universal Compatibility:</strong> Works with any TeamSpeak server configuration and automatically reloads banner content.
+              </p>
+            </div>
+          </div>
+
+          <div onclick="
+            const container = this.closest('div[style*=perspective]');
+            const flipInner = container ? container.children[0] : null;
+            if (flipInner) {
+              flipInner.style.transform = 'rotateY(0deg)';
+              flipInner.style.transitionDuration = '700ms';
+              container.classList.remove('flipped');
+            }
+          " class="flip-zone absolute top-0 left-0 w-16 h-full bg-gradient-to-r from-orange-500/15 to-transparent hover:from-orange-500/25 cursor-pointer transition-all duration-300 flex items-center justify-center group z-10 rounded-l-lg">
+            <div class="text-orange-400/60 group-hover:text-orange-400 transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
   </div>
+
 </div>

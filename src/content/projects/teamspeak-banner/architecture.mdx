@@ -1,0 +1,104 @@
+---
+title: "Technical Architecture"
+icon: "/icons/architecture.svg"
+---
+
+<div class="mt-8">
+  <div class="text-left mb-12">
+    <p class="text-gray-400 text-lg max-w-4xl">
+      The banner system leverages <strong class="text-gray-300">PHP's GD library</strong> and <strong class="text-gray-300">TeamSpeak's ServerQuery API</strong> to create dynamic, real-time graphics. Each component is designed for modularity and performance, ensuring fast response times while maintaining visual quality and personalization features.
+    </p>
+  </div>
+
+  <div class="mt-8">
+    <h4 class="text-lg font-semibold text-gray-300 mb-6 text-center">Complete Data Flow</h4>
+    <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between space-y-6 lg:space-y-0 lg:space-x-6">
+
+      <div class="flex flex-col items-center text-center">
+        <div class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center border-2 border-blue-400 mb-3">
+          <div class="text-blue-400 font-mono text-sm">PHP</div>
+        </div>
+        <div class="text-xs text-gray-400 max-w-24 h-12 flex flex-col justify-start">
+          <div class="font-bold text-gray-300">Script Initialization</div>
+          <div>Loads config & libraries</div>
+        </div>
+      </div>
+
+      <div class="hidden lg:block text-gray-600 self-center">→</div>
+
+      <div class="flex flex-col items-center text-center">
+        <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center border-2 border-green-400 mb-3">
+          <div class="text-green-400 font-mono text-sm">TS3</div>
+        </div>
+        <div class="text-xs text-gray-400 max-w-24 h-12 flex flex-col justify-start">
+          <div class="font-bold text-gray-300">ServerQuery</div>
+          <div>Authenticates & connects</div>
+        </div>
+      </div>
+
+      <div class="hidden lg:block text-gray-600 self-center">→</div>
+
+      <div class="flex flex-col items-center text-center">
+        <div class="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center border-2 border-yellow-400 mb-3">
+          <div class="text-yellow-400 font-mono text-sm">DATA</div>
+        </div>
+        <div class="text-xs text-gray-400 max-w-24 h-12 flex flex-col justify-start">
+          <div class="font-bold text-gray-300">Collection</div>
+          <div>Server & client info</div>
+        </div>
+      </div>
+
+      <div class="hidden lg:block text-gray-600 self-center">→</div>
+
+      <div class="flex flex-col items-center text-center">
+        <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center border-2 border-purple-400 mb-3">
+          <div class="text-purple-400 font-mono text-sm">GD</div>
+        </div>
+        <div class="text-xs text-gray-400 max-w-24 h-12 flex flex-col justify-start">
+          <div class="font-bold text-gray-300">Image Processing</div>
+          <div>Draws banner elements</div>
+        </div>
+      </div>
+
+      <div class="hidden lg:block text-gray-600 self-center">→</div>
+
+      <div class="flex flex-col items-center text-center">
+        <div class="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center border-2 border-orange-400 mb-3">
+          <div class="text-orange-400 font-mono text-sm">PNG</div>
+        </div>
+        <div class="text-xs text-gray-400 max-w-24 h-12 flex flex-col justify-start">
+          <div class="font-bold text-gray-300">Output</div>
+          <div>Real-time banner</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+{" "}
+<div class="mt-8 grid md:grid-cols-2 gap-6">
+  <div class="bg-transparent rounded-lg p-4">
+    <h5 class="text-lg font-semibold text-gray-300 mb-3">
+      Smart Client Detection
+    </h5>
+    <div class="space-y-2 text-gray-400">
+      <div>• Compares visitor IP with connected clients</div>
+      <div>• Shows personalized stats if connected</div>
+      <div>• Displays upload/download, online time, country flag</div>
+      <div>• Server group icons and admin detection</div>
+    </div>
+  </div>
+  <div class="bg-transparent rounded-lg p-4">
+    <h5 class="text-lg font-semibold text-gray-300 mb-3">
+      Advanced Image Processing
+    </h5>
+    <div class="space-y-2 text-gray-400">
+      <div>• Dynamic text positioning with custom fonts</div>
+      <div>• Gaussian blur effects on background</div>
+      <div>• Transparent overlays and color blending</div>
+      <div>• Real-time PNG generation with proper headers</div>
+    </div>
+  </div>
+</div>
+
+</div>
