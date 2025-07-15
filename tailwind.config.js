@@ -12,8 +12,18 @@ export default {
     },
     extend: {
       fontFamily: {
-        handrawn: ["Delicious Handrawn", "serif"],
-        open: ["Open Sans", "serif"],
+        handrawn: ["Delicious Handrawn", "Brush Script MT", "cursive", "serif"],
+        open: [
+          "Open Sans",
+          "system-ui",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif",
+        ],
       },
       keyframes: {
         loopUp: {

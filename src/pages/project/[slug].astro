@@ -81,8 +81,10 @@ function getSourceCodeIconPath(isOpenSource) {
       transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
     }
 
-    .hover-preview-button:hover {
-      transform: scale(1.05);
+    @media (min-width: 1280px) {
+      .hover-preview-button:hover {
+        transform: scale(1.05);
+      }
     }
 
     .icon {
@@ -171,7 +173,7 @@ function getSourceCodeIconPath(isOpenSource) {
   <div class="xl:hidden">
     <a
       href={`/project/${encodeURIComponent(previousProject.slug)}`}
-      class="hover-preview-button flex items-center text-gray-300 hover:text-white transition-all duration-300 px-4 py-3 text-sm font-bold fixed top-32 left-4 z-40 hover:bg-blue-500 rounded-lg backdrop-blur-sm shadow-lg hover:shadow-xl transform hover:scale-105"
+      class="hover-preview-button flex items-center text-gray-300 xl:hover:text-white transition-all duration-300 px-4 py-3 text-sm font-bold fixed top-32 left-4 z-40 xl:hover:bg-blue-500 rounded-lg backdrop-blur-sm shadow-lg xl:hover:shadow-xl"
       aria-label={`Previous Project: ${previousProject.name}`}
       data-preview-src={previousProject.preview}
     >
@@ -182,7 +184,7 @@ function getSourceCodeIconPath(isOpenSource) {
     </a>
     <a
       href={`/project/${encodeURIComponent(nextProject.slug)}`}
-      class="hover-preview-button flex items-center text-gray-300 hover:text-white transition-all duration-300 px-4 py-3 text-sm font-bold fixed top-32 right-4 z-40 bg-blue-500/80 hover:bg-blue-500 rounded-lg backdrop-blur-sm shadow-lg hover:shadow-xl transform hover:scale-105"
+      class="hover-preview-button flex items-center text-gray-300 xl:hover:text-white transition-all duration-300 px-4 py-3 text-sm font-bold fixed top-32 right-4 z-40 bg-blue-500/80 xl:hover:bg-blue-500 rounded-lg backdrop-blur-sm shadow-lg xl:hover:shadow-xl"
       aria-label={`Next Project: ${nextProject.name}`}
       data-preview-src={nextProject.preview}
     >
@@ -196,7 +198,7 @@ function getSourceCodeIconPath(isOpenSource) {
   <div class="relative flex items-start justify-center min-h-screen font-open">
     <a
       href={`/project/${encodeURIComponent(previousProject.slug)}`}
-      class="sticky-button hover-preview-button font-bold xl:left-[-50px] items-center justify-center bg-opacity-75 hover:bg-opacity-100 text-gray-300 px-4 transition duration-300 z-20 h-16 hidden xl:flex"
+      class="sticky-button hover-preview-button font-bold xl:left-[-50px] items-center justify-center bg-opacity-75 xl:hover:bg-opacity-100 text-gray-300 px-4 transition duration-300 z-20 h-16 hidden xl:flex"
       aria-label="Go Back"
       data-preview-src={previousProject.preview}
     >
@@ -311,7 +313,7 @@ function getSourceCodeIconPath(isOpenSource) {
     </div>
     <a
       href={`/project/${encodeURIComponent(nextProject.slug)}`}
-      class="sticky-button hover-preview-button mt-44 font-bold xl:right-[-50px] rounded-tl-3xl rounded-br-3xl rounded-sm bg-blue-500 items-center justify-center bg-opacity-75 hover:bg-opacity-100 text-gray-300 px-4 transition duration-300 z-20 h-14 hidden xl:flex"
+      class="sticky-button hover-preview-button mt-44 font-bold xl:right-[-50px] rounded-tl-3xl rounded-br-3xl rounded-sm bg-blue-500 items-center justify-center bg-opacity-75 xl:hover:bg-opacity-100 text-gray-300 px-4 transition duration-300 z-20 h-14 hidden xl:flex"
       aria-label="Next Project"
       data-preview-src={nextProject.preview}
     >
@@ -407,6 +409,9 @@ function getSourceCodeIconPath(isOpenSource) {
       if (hasInitializedPreview) return;
       hasInitializedPreview = true;
 
+      // Only enable hover preview on xl screens and larger (1280px+)
+      if (window.innerWidth < 1280) return;
+
       const hoverPreview = document.getElementById('hover-preview');
       const previewImage = document.getElementById('preview-image');
       const buttons = document.querySelectorAll('.hover-preview-button');
@@ -470,6 +475,17 @@ function getSourceCodeIconPath(isOpenSource) {
       }, 100);
     }
 
+    function handleResize() {
+      hasInitializedPreview = false;
+      if (window.innerWidth < 1280) {
+        const hoverPreview = document.getElementById('hover-preview');
+        if (hoverPreview) {
+          hoverPreview.classList.remove('visible');
+        }
+      }
+      initializePreview();
+    }
+
     document.addEventListener('astro:before-swap', () => {
       hasInitializedPreview = false;
     });
@@ -479,5 +495,70 @@ function getSourceCodeIconPath(isOpenSource) {
       initializePreview();
     }
     document.addEventListener('astro:page-load', initializePreview);
+    window.addEventListener('resize', handleResize);
+  </script>
+
+  <script>
+    let videoInitialized = false;
+
+    function initializeVideos() {
+
+      const videos = document.querySelectorAll('video[autoplay]');
+
+      videos.forEach(video => {
+        // Force reload the video source for Firefox
+        const src = video.src;
+        if (src) {
+          video.src = '';
+          video.load();
+          video.src = src;
+        }
+
+        video.currentTime = 0;
+
+        if (video.readyState >= 2) {
+          playVideo(video);
+        } else {
+          video.addEventListener('loadeddata', () => playVideo(video), { once: true });
+          video.load();
+        }
+      });
+    }
+
+    function playVideo(video) {
+      const playPromise = video.play();
+
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          setTimeout(() => {
+            video.play().catch(() => {
+            });
+          }, 100);
+        });
+      }
+    }
+
+    document.addEventListener('astro:before-swap', () => {
+      videoInitialized = false;
+    });
+
+    document.addEventListener('astro:page-load', () => {
+      if (!videoInitialized) {
+        videoInitialized = true;
+        setTimeout(initializeVideos, 50);
+      }
+    });
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        if (!videoInitialized) {
+          videoInitialized = true;
+          initializeVideos();
+        }
+      });
+    } else if (!videoInitialized) {
+      videoInitialized = true;
+      initializeVideos();
+    }
   </script>
 </Layout>
